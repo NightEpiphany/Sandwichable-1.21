@@ -18,11 +18,9 @@ public class FermentingMilkSpreadType extends SpreadType {
     }
 
     @Override
-    public void onPour(ItemStack container, ItemStack spread) {
+    public void onPour(ItemStack container, ItemStack spread, NbtCompound nbt) {
         if(container.contains(CUSTOM_DATA)) {
-            NbtComponent.set(CUSTOM_DATA, spread, nbtCompound -> {
-                nbtCompound.putInt("effectDuration", container.get(CUSTOM_DATA).copyNbt().getInt("percentFermented")*4);
-            });
+            nbt.putInt("effectDuration", container.get(CUSTOM_DATA).copyNbt().getInt("percentFermented") * 4);
         }
     }
 

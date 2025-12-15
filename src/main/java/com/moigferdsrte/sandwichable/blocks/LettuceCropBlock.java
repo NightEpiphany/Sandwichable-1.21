@@ -55,7 +55,7 @@ public class LettuceCropBlock extends CropBlock {
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
-        return AGE_TO_SHAPE[(Integer)state.get(this.getAgeProperty())];
+        return AGE_TO_SHAPE[state.get(this.getAgeProperty())];
     }
 
     static {

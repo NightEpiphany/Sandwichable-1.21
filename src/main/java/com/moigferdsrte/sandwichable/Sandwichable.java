@@ -19,6 +19,7 @@ import com.moigferdsrte.sandwichable.registry.ItemsRegistry;
 import com.moigferdsrte.sandwichable.registry.NetworkRegistry;
 import com.moigferdsrte.sandwichable.registry.RecipeRegistry;
 import com.moigferdsrte.sandwichable.util.AncientGrainType;
+import com.moigferdsrte.sandwichable.util.ExtraDispenserBehaviorRegistry;
 import com.moigferdsrte.sandwichable.util.SpreadRegistry;
 import com.moigferdsrte.sandwichable.util.Util;
 import com.moigferdsrte.sandwichable.villager.SandwichMakerProfession;
@@ -73,13 +74,13 @@ public class Sandwichable implements ModInitializer {
 
 	public static final ExtendedScreenHandlerType<DesalinatorScreenHandler, DesalinatorPos> DESALINATOR_HANDLER = new ExtendedScreenHandlerType<>((syncId, playerInv, pos) -> {
 		BlockEntity be = playerInv.player.getEntityWorld().getBlockEntity(pos.pos());
-		if(be instanceof DesalinatorBlockEntity) return new DesalinatorScreenHandler(syncId, playerInv, (DesalinatorBlockEntity)be);
+		if(be instanceof DesalinatorBlockEntity s) return new DesalinatorScreenHandler(syncId, playerInv, s);
 		return null;
 	}, DesalinatorPos.PACKET_CODEC);
 
 	public static final ExtendedScreenHandlerType<BottleCrateScreenHandler, BottleCratePos> BOTTLE_CRATE_HANDLER = new ExtendedScreenHandlerType<>((syncId, playerInv, pos) -> {
 		BlockEntity be = playerInv.player.getEntityWorld().getBlockEntity(pos.pos());
-		if(be instanceof BottleCrateBlockEntity) return new BottleCrateScreenHandler(syncId, playerInv, (BottleCrateBlockEntity)be);
+		if(be instanceof BottleCrateBlockEntity s) return new BottleCrateScreenHandler(syncId, playerInv, s);
 		return null;
 	}, BottleCratePos.PACKET_CODEC);
 
@@ -115,13 +116,15 @@ public class Sandwichable implements ModInitializer {
 		FluidsRegistry.init();
 		SpreadRegistry.init();
 		RecipeRegistry.init();
-		AncientGrainType.init();
 		SandwichableWorldgen.init();
 		SandwichableDataComponent.init();
 		CommonTags.init();
 		SandwichMakerProfession.init();
 		NetworkRegistry.serverInit();
 		VillagerHouses.register();
+		AncientGrainType.init();
+
+		ExtraDispenserBehaviorRegistry.initDefaults();
 
 		Registry.register(Registries.SCREEN_HANDLER, Util.id("desalinator_handler"), DESALINATOR_HANDLER);
 		Registry.register(Registries.SCREEN_HANDLER, Util.id("bottle_crate_handler"), BOTTLE_CRATE_HANDLER);

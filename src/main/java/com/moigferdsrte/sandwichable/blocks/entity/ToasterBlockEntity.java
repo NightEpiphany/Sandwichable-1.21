@@ -38,7 +38,7 @@ import static net.minecraft.component.DataComponentTypes.FOOD;
 public class ToasterBlockEntity extends BlockEntity implements SidedInventory, SyncedBlockEntity {
     private DefaultedList<ItemStack> items = DefaultedList.ofSize(2, ItemStack.EMPTY);
     private @Nullable UUID lastUser;
-    private static int toastTime = 240;
+    private static final int toastTime = 240;
     private int toastProgress = 0;
     private boolean toasting = false;
     private boolean smoking = false;

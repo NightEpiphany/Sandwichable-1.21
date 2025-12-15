@@ -31,6 +31,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 public class ToasterBlock extends ModelBlockWithEntity implements Waterloggable, SneakInteractable {
@@ -43,6 +44,17 @@ public class ToasterBlock extends ModelBlockWithEntity implements Waterloggable,
     public ToasterBlock(AbstractBlock.Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(ON, false).with(WATERLOGGED, false));
+    }
+
+    @Override
+    protected BlockState getStateForNeighborUpdate(
+            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos
+    ) {
+        if (state.get(WATERLOGGED)) {
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        }
+
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Override
@@ -79,8 +91,8 @@ public class ToasterBlock extends ModelBlockWithEntity implements Waterloggable,
 
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        if(world.getBlockEntity(pos) instanceof ToasterBlockEntity) {
-            return ((ToasterBlockEntity)world.getBlockEntity(pos)).getComparatorOutput();
+        if(world.getBlockEntity(pos) instanceof ToasterBlockEntity toasterBlockEntity) {
+            return toasterBlockEntity.getComparatorOutput();
         }
         return 0;
     }
@@ -88,8 +100,8 @@ public class ToasterBlock extends ModelBlockWithEntity implements Waterloggable,
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
         super.neighborUpdate(state, world, pos, block, neighborPos, moved);
-        if(world.getBlockEntity(pos) instanceof ToasterBlockEntity) {
-            boolean toasting = ((ToasterBlockEntity)world.getBlockEntity(pos)).isToasting();
+        if(world.getBlockEntity(pos) instanceof ToasterBlockEntity toasterBlockEntity) {
+            boolean toasting = toasterBlockEntity.isToasting();
             world.setBlockState(pos, world.getBlockState(pos).with(ON, toasting));
         }
     }
@@ -97,8 +109,8 @@ public class ToasterBlock extends ModelBlockWithEntity implements Waterloggable,
     @Override
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        if(world.getBlockEntity(pos) instanceof ToasterBlockEntity) {
-            boolean toasting = ((ToasterBlockEntity)world.getBlockEntity(pos)).isToasting();
+        if(world.getBlockEntity(pos) instanceof ToasterBlockEntity toasterBlockEntity) {
+            boolean toasting = toasterBlockEntity.isToasting();
             world.setBlockState(pos, world.getBlockState(pos).with(ON, toasting));
         }
 
@@ -108,8 +120,7 @@ public class ToasterBlock extends ModelBlockWithEntity implements Waterloggable,
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity be = world.getBlockEntity(pos);
-            if (be instanceof ToasterBlockEntity) {
-                ToasterBlockEntity blockEntity = (ToasterBlockEntity)world.getBlockEntity(pos);
+            if (be instanceof ToasterBlockEntity blockEntity) {
                 for (int i = 0; i < 2; i++) {
                     ItemEntity item = new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, blockEntity.getItems().get(i));
                     world.spawnEntity(item);
@@ -122,8 +133,7 @@ public class ToasterBlock extends ModelBlockWithEntity implements Waterloggable,
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.getBlockEntity(pos) instanceof ToasterBlockEntity) {
-            ToasterBlockEntity blockEntity = (ToasterBlockEntity) world.getBlockEntity(pos);
+        if (world.getBlockEntity(pos) instanceof ToasterBlockEntity blockEntity) {
             if (!player.isSneaking()) {
                 if (!blockEntity.isToasting()) {
                     if (!player.getStackInHand(player.preferredHand).isEmpty() && !player.getStackInHand(player.preferredHand).getItem().equals(BlocksRegistry.SANDWICH.asItem())) {
@@ -160,7 +170,14 @@ public class ToasterBlock extends ModelBlockWithEntity implements Waterloggable,
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(Properties.HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        BlockPos blockPos = ctx.getBlockPos();
+        BlockState blockState = ctx.getWorld().getBlockState(blockPos);
+        if (blockState.isOf(this)) {
+            return blockState.with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        } else {
+            FluidState fluidState = ctx.getWorld().getFluidState(blockPos);
+            return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER).with(Properties.HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+        }
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {

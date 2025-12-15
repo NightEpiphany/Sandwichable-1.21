@@ -21,6 +21,9 @@
 		"client": [
 		  "com.moigferdsrte.sandwichable.SandwichableClient"
 		],
+		"rei_client": [
+			"com.moigferdsrte.sandwichable.compact.rei.SandwichableREI"
+		],
 		"appleskin": [
 			"com.moigferdsrte.sandwichable.compact.appleskin.SandwichableAppleSkin"
 		],

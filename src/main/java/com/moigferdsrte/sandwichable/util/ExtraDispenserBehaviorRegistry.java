@@ -1,6 +1,15 @@
 package com.moigferdsrte.sandwichable.util;
 
+import com.moigferdsrte.sandwichable.Sandwichable;
+import com.moigferdsrte.sandwichable.blocks.entity.BasinBlockEntity;
+import com.moigferdsrte.sandwichable.blocks.entity.PickleJarBlockEntity;
+import com.moigferdsrte.sandwichable.blocks.entity.SandwichTableBlockEntity;
+import com.moigferdsrte.sandwichable.blocks.extra.BasinContent;
+import com.moigferdsrte.sandwichable.blocks.extra.BasinContentType;
+import com.moigferdsrte.sandwichable.blocks.extra.PickleJarFluid;
+import com.moigferdsrte.sandwichable.entity.SandwichTableMinecartEntity;
 import com.moigferdsrte.sandwichable.items.CheeseCultureItem;
+import com.moigferdsrte.sandwichable.registry.BlocksRegistry;
 import com.moigferdsrte.sandwichable.registry.ItemsRegistry;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
@@ -22,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.minecraft.component.DataComponentTypes.FOOD;
+
 public class ExtraDispenserBehaviorRegistry {
     public static final Map<ItemConvertible, List<DispenserBehavior>> ENTRIES = new HashMap<>();
 
@@ -30,20 +41,20 @@ public class ExtraDispenserBehaviorRegistry {
         ENTRIES.get(item).add(behavior);
     }
 
-    /*public static void initDefaults() {
+    public static void initDefaults() {
         DispenserBehavior foodBehavior = new ItemDispenserBehavior() {
             @Override
             protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
-                BlockPos pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
-                World world = pointer.getWorld();
+                BlockPos pos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+                World world = pointer.world();
                 Sandwich sandwich = null;
                 Runnable sync = () -> {};
-                if(world.getBlockEntity(pos) instanceof SandwichTableBlockEntity) {
-                    sandwich = ((SandwichTableBlockEntity)world.getBlockEntity(pos)).getSandwich();
-                    sync = () -> Util.sync(((SandwichTableBlockEntity)world.getBlockEntity(pos)));
+                if(world.getBlockEntity(pos) instanceof SandwichTableBlockEntity sandwichTableBlockEntity) {
+                    sandwich = sandwichTableBlockEntity.getSandwich();
+                    sync = () -> Util.sync((sandwichTableBlockEntity));
                 } else {
-                    List<SandwichTableMinecartEntity> list = pointer.getWorld().getEntitiesByClass(SandwichTableMinecartEntity.class, new Box(pos), EntityPredicates.EXCEPT_SPECTATOR);
-                    if(list.size() > 0) {
+                    List<SandwichTableMinecartEntity> list = pointer.world().getEntitiesByClass(SandwichTableMinecartEntity.class, new Box(pos), EntityPredicates.EXCEPT_SPECTATOR);
+                    if(!list.isEmpty()) {
                         sandwich = list.get(0).getSandwich();
                         sync = list.get(0)::sync;
                     }
@@ -53,10 +64,9 @@ public class ExtraDispenserBehaviorRegistry {
                     ItemStack r = sandwich.tryAddTopFoodFrom(world, stack);
                     if(r != null) {
                         sync.run();
-                        if(!r.isEmpty() && pointer.getWorld().getBlockEntity(pointer.getPos()) instanceof DispenserBlockEntity) {
-                            DispenserBlockEntity be = (DispenserBlockEntity)pointer.getWorld().getBlockEntity(pointer.getPos());
-                            int a = be.addToFirstFreeSlot(r);
-                            if(a < 0) return null;
+                        if(!r.isEmpty() && pointer.world().getBlockEntity(pointer.pos()) instanceof DispenserBlockEntity be) {
+                            var a = be.addToFirstFreeSlot(r);
+                            if(a.isEmpty()) return null;
                         }
                         return stack;
                     }
@@ -65,15 +75,14 @@ public class ExtraDispenserBehaviorRegistry {
             }
         };
         Util.forEveryEntryEver(Registries.ITEM, item -> {
-            if((item.asItem().isFood() || SpreadRegistry.INSTANCE.itemHasSpread(item)) && item.asItem() != BlocksRegistry.SANDWICH.asItem()) {
+            if((item.getDefaultStack().contains(FOOD) || SpreadRegistry.INSTANCE.itemHasSpread(item)) && item.asItem() != BlocksRegistry.SANDWICH.asItem()) {
                 register(item, foodBehavior);
             }
             if(item instanceof CheeseCultureItem) {
                 register(item, (pointer, stack) -> {
-                    BlockPos pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
-                    ServerWorld world = pointer.getWorld();
-                    if(world.getBlockEntity(pos) instanceof BasinBlockEntity) {
-                        BasinBlockEntity be = (BasinBlockEntity)world.getBlockEntity(pos);
+                    BlockPos pos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+                    ServerWorld world = pointer.world();
+                    if(world.getBlockEntity(pos) instanceof BasinBlockEntity be) {
                         if(be.getContent().getContentType() == BasinContentType.MILK) {
                             return be.addCheeseCulture(stack);
                         }
@@ -85,10 +94,9 @@ public class ExtraDispenserBehaviorRegistry {
         ItemDispenserBehavior milkBehavior = new ItemDispenserBehavior() {
             @Override
             protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
-                BlockPos pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
-                ServerWorld world = pointer.getWorld();
-                if(world.getBlockEntity(pos) instanceof BasinBlockEntity) {
-                    BasinBlockEntity be = (BasinBlockEntity)world.getBlockEntity(pos);
+                BlockPos pos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+                ServerWorld world = pointer.world();
+                if(world.getBlockEntity(pos) instanceof BasinBlockEntity be) {
                     if(be.getContent() == BasinContent.AIR) {
                         return be.insertMilk(stack);
                     }
@@ -99,10 +107,9 @@ public class ExtraDispenserBehaviorRegistry {
         register(Items.MILK_BUCKET, milkBehavior);
         register(ItemsRegistry.FERMENTING_MILK_BUCKET, milkBehavior);
         register(Items.BUCKET, (pointer, stack) -> {
-            BlockPos pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
-            ServerWorld world = pointer.getWorld();
-            if(world.getBlockEntity(pos) instanceof BasinBlockEntity) {
-                BasinBlockEntity be = (BasinBlockEntity)world.getBlockEntity(pos);
+            BlockPos pos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+            ServerWorld world = pointer.world();
+            if(world.getBlockEntity(pos) instanceof BasinBlockEntity be) {
                 if(be.getContent().getContentType().isLiquid) {
                     return be.extractMilk();
                 }
@@ -110,10 +117,9 @@ public class ExtraDispenserBehaviorRegistry {
             return null;
         });
         register(Items.BUCKET, (pointer, stack) -> {
-            BlockPos pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
-            ServerWorld world = pointer.getWorld();
-            if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity) {
-                PickleJarBlockEntity be = (PickleJarBlockEntity)world.getBlockEntity(pos);
+            BlockPos pos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+            ServerWorld world = pointer.world();
+            if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity be) {
                 if(be.getFluid() == PickleJarFluid.WATER) {
                     be.emptyFluid(true);
                     return new ItemStack(Items.WATER_BUCKET);
@@ -122,10 +128,9 @@ public class ExtraDispenserBehaviorRegistry {
             return null;
         });
         register(Items.WATER_BUCKET, (pointer, stack) -> {
-            BlockPos pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
-            ServerWorld world = pointer.getWorld();
-            if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity) {
-                PickleJarBlockEntity be = (PickleJarBlockEntity)world.getBlockEntity(pos);
+            BlockPos pos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+            ServerWorld world = pointer.world();
+            if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity be) {
                 if(be.getFluid() == PickleJarFluid.AIR) {
                     be.fillWater(true);
                     return new ItemStack(Items.BUCKET);
@@ -134,10 +139,9 @@ public class ExtraDispenserBehaviorRegistry {
             return null;
         });
         register(ItemsRegistry.SALT, (pointer, stack) -> {
-            BlockPos pos = pointer.getPos().offset(pointer.getBlockState().get(DispenserBlock.FACING));
-            ServerWorld world = pointer.getWorld();
-            if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity) {
-                PickleJarBlockEntity be = (PickleJarBlockEntity)world.getBlockEntity(pos);
+            BlockPos pos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+            ServerWorld world = pointer.world();
+            if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity be) {
                 if(be.getFluid() == PickleJarFluid.WATER && be.getItemCount() > 0) {
                     be.startPickling();
                     stack.decrement(1);
@@ -147,5 +151,5 @@ public class ExtraDispenserBehaviorRegistry {
             }
             return null;
         });
-    }*/
+    }
 }

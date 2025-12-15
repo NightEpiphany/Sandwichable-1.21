@@ -9,6 +9,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -22,15 +24,17 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-public class CuttingBoardBlock extends ModelBlockWithEntity {
+public class CuttingBoardBlock extends ModelBlockWithEntity implements Waterloggable {
     public static final VoxelShape[] SHAPES;
     public static final BooleanProperty POWERED = Properties.POWERED;
+    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
     public CuttingBoardBlock(AbstractBlock.Settings settings) {
         super(settings);
-        setDefaultState(this.stateManager.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(POWERED, false));
+        this.setDefaultState(this.stateManager.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(POWERED, false).with(WATERLOGGED, false));
     }
 
     @Override
@@ -40,8 +44,10 @@ public class CuttingBoardBlock extends ModelBlockWithEntity {
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
-        stateManager.add(Properties.HORIZONTAL_FACING, POWERED);
+        stateManager.add(Properties.HORIZONTAL_FACING, POWERED, WATERLOGGED);
     }
+
+
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
@@ -79,8 +85,7 @@ public class CuttingBoardBlock extends ModelBlockWithEntity {
 
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        if(world.getBlockEntity(pos) instanceof CuttingBoardBlockEntity) {
-            CuttingBoardBlockEntity blockEntity = (CuttingBoardBlockEntity) world.getBlockEntity(pos);
+        if(world.getBlockEntity(pos) instanceof CuttingBoardBlockEntity blockEntity) {
             return blockEntity.getItem().getCount() / blockEntity.getItem().getMaxCount();
         }
         return super.getComparatorOutput(state, world, pos);
@@ -95,12 +100,28 @@ public class CuttingBoardBlock extends ModelBlockWithEntity {
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean notify) {
         boolean pwr = world.isReceivingRedstonePower(pos);
         if(pwr != state.get(POWERED)) {
-            if(world.getBlockEntity(pos) instanceof CuttingBoardBlockEntity && pwr) {
-                ((CuttingBoardBlockEntity) world.getBlockEntity(pos)).trySliceWithKnife();
+            if(world.getBlockEntity(pos) instanceof CuttingBoardBlockEntity blockEntity && pwr) {
+                blockEntity.trySliceWithKnife();
             }
             if(!world.isClient()) world.setBlockState(pos, state.with(POWERED, pwr));
         }
         super.neighborUpdate(state, world, pos, block, fromPos, notify);
+    }
+
+    @Override
+    protected BlockState getStateForNeighborUpdate(
+            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos
+    ) {
+        if (state.get(WATERLOGGED)) {
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        }
+
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    protected FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     @Nullable
@@ -109,8 +130,17 @@ public class CuttingBoardBlock extends ModelBlockWithEntity {
         return validateTicker(type, BlocksRegistry.CUTTINGBOARD_BLOCKENTITY, CuttingBoardBlockEntity::tick);
     }
 
+    @Nullable
+    @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(Properties.HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing());
+        BlockPos blockPos = ctx.getBlockPos();
+        BlockState blockState = ctx.getWorld().getBlockState(blockPos);
+        if (blockState.isOf(this)) {
+            return blockState.with(WATERLOGGED, false).with(Properties.HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing());
+        } else {
+            FluidState fluidState = ctx.getWorld().getFluidState(blockPos);
+            return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER).with(Properties.HORIZONTAL_FACING, ctx.getHorizontalPlayerFacing());
+        }
     }
 
     public BlockState rotate(BlockState state, BlockRotation rotation) {

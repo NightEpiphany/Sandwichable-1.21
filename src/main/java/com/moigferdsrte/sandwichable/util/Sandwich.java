@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
@@ -69,8 +70,8 @@ public class Sandwich {
         if(SpreadRegistry.INSTANCE.itemHasSpread(stack.getItem())) {
             SpreadType spreadType = SpreadRegistry.INSTANCE.getSpreadFromItem(stack.getItem());
             ItemStack spread = new ItemStack(SpreadRegistry.INSTANCE.getItem(spreadType), 1);
-            spreadType.onPour(stack, spread);
             NbtCompound nbtCompound = new NbtCompound();
+            spreadType.onPour(stack, spread, nbtCompound);
             nbtCompound.putString("spreadType", SpreadRegistry.INSTANCE.asString(spreadType));
             NbtComponent.set(CUSTOM_DATA, spread, nbtCompound);
             if(!foods.isEmpty()) NbtComponent.set(CUSTOM_DATA, spread, nbt -> nbt.putBoolean("onLoaf", foods.get(0).isIn(Sandwichable.BREAD_LOAVES)));
@@ -156,11 +157,14 @@ public class Sandwich {
     }
 
     public void addFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        NbtList list = nbt.getList("Items", 10);
+        NbtList list = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         ItemStack stack;
         for(int i = 0; i < list.size(); ++i) {
             NbtCompound stackTag = list.getCompound(i);
             stack = ItemStack.fromNbt(registries, stackTag).orElse(new ItemStack(Items.BREAD));
+            if (stackTag.contains("tag")) {
+                stack.set(CUSTOM_DATA, NbtComponent.of(stackTag.getCompound("tag")));
+            }
             if(stack.getItem() != BlocksRegistry.SANDWICH.asItem()) foods.add(stack);
         }
     }

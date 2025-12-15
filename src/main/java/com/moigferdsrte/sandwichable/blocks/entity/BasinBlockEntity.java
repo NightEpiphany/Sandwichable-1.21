@@ -214,8 +214,7 @@ public class BasinBlockEntity extends BlockEntity implements SidedInventory, Syn
 
     public ItemStack addCheeseCulture(ItemStack stack) {
         if(getContent().getContentType() == BasinContentType.MILK) {
-            if(stack.getItem() instanceof CheeseCultureItem) {
-                CheeseCultureItem culture = (CheeseCultureItem)stack.getItem();
+            if(stack.getItem() instanceof CheeseCultureItem culture) {
                 this.startFermenting(culture.getCheeseType());
                 createCheeseParticle(this.world, this.pos, this.rng, 8, getContent().getCheeseType().getParticleColorRGB());
                 world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 0.82F, 1.0F);

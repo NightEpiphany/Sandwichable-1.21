@@ -7,6 +7,7 @@ import com.moigferdsrte.sandwichable.blocks.entity.screen.ins.DesalinatorScreen;
 import com.moigferdsrte.sandwichable.entity.render.SandwichTableMinecartEntityRenderer;
 import com.moigferdsrte.sandwichable.fluids.FluidsRegistry;
 import com.moigferdsrte.sandwichable.items.BiomeVariantItem;
+import com.moigferdsrte.sandwichable.items.spread.PotionSpreadType;
 import com.moigferdsrte.sandwichable.particle.Particles;
 import com.moigferdsrte.sandwichable.registry.BlocksRegistry;
 import com.moigferdsrte.sandwichable.registry.EntitiesRegistry;
@@ -162,7 +163,7 @@ public class SandwichableClient implements ClientModInitializer {
                 ItemsRegistry.HONEY_SPREAD);
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex)
-                        -> ColorHelper.Argb.fullAlpha(SpreadRegistry.POTION.getColor()),
+                        -> ColorHelper.Argb.fullAlpha(SpreadRegistry.POTION.getColor(stack)),
                 ItemsRegistry.POTION_SPREAD);
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex)

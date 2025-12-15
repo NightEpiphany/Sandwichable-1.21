@@ -36,6 +36,7 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
+	maven { url "https://maven.shedaniel.me" }
 }
 
 dependencies {
@@ -43,6 +44,9 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:16.0.799"
+	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:16.0.799"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"

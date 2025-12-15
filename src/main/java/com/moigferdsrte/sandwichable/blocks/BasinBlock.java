@@ -13,22 +13,32 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
-public class BasinBlock extends ModelBlockWithEntity {
+public class BasinBlock extends ModelBlockWithEntity implements Waterloggable {
     public static final VoxelShape SHAPE;
+    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
     public BasinBlock(AbstractBlock.Settings settings) {
         super(settings);
+        this.setDefaultState(this.getDefaultState().with(WATERLOGGED, false));
     }
 
     @Override
@@ -46,6 +56,41 @@ public class BasinBlock extends ModelBlockWithEntity {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return validateTicker(type, BlocksRegistry.BASIN_BLOCKENTITY, BasinBlockEntity::tick);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        BlockPos blockPos = ctx.getBlockPos();
+        BlockState blockState = ctx.getWorld().getBlockState(blockPos);
+        if (blockState.isOf(this)) {
+            return blockState.with(WATERLOGGED, false);
+        } else {
+            FluidState fluidState = ctx.getWorld().getFluidState(blockPos);
+            return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+        }
+    }
+
+    @Override
+    protected FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+    }
+
+    @Override
+    protected BlockState getStateForNeighborUpdate(
+            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos
+    ) {
+        if (state.get(WATERLOGGED)) {
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        }
+
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
+        super.appendProperties(builder);
     }
 
     @Override
@@ -78,8 +123,8 @@ public class BasinBlock extends ModelBlockWithEntity {
 
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        if(world.getBlockEntity(pos) instanceof BasinBlockEntity) {
-            return ((BasinBlockEntity)world.getBlockEntity(pos)).getContent().getContentType() == BasinContentType.CHEESE ? 15 : 0;
+        if(world.getBlockEntity(pos) instanceof BasinBlockEntity be) {
+            return be.getContent().getContentType() == BasinContentType.CHEESE ? 15 : 0;
         }
         return super.getComparatorOutput(state, world, pos);
     }
@@ -87,8 +132,7 @@ public class BasinBlock extends ModelBlockWithEntity {
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock() && world.getBlockEntity(pos)!=null) {
-            if(world.getBlockEntity(pos) instanceof BasinBlockEntity) {
-                BasinBlockEntity blockEntity = (BasinBlockEntity)world.getBlockEntity(pos);
+            if(world.getBlockEntity(pos) instanceof BasinBlockEntity blockEntity) {
                 if(blockEntity.getContent().getContentType() == BasinContentType.CHEESE) {
                     ItemEntity item = new ItemEntity(world, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, new ItemStack(BasinBlockEntity.cheeseTypeToItem().get(blockEntity.getContent().getCheeseType())));
                     world.spawnEntity(item);

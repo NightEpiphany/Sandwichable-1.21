@@ -11,22 +11,32 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-public class PickleJarBlock extends ModelBlockWithEntity {
+public class PickleJarBlock extends ModelBlockWithEntity implements Waterloggable {
     public static final VoxelShape SHAPE;
+    public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
     public PickleJarBlock(AbstractBlock.Settings settings) {
         super(settings);
+        this.setDefaultState(this.getDefaultState().with(WATERLOGGED, false));
     }
 
     @Override
@@ -39,6 +49,41 @@ public class PickleJarBlock extends ModelBlockWithEntity {
         return SHAPE;
     }
 
+    @Nullable
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        BlockPos blockPos = ctx.getBlockPos();
+        BlockState blockState = ctx.getWorld().getBlockState(blockPos);
+        if (blockState.isOf(this)) {
+            return blockState.with(WATERLOGGED, false);
+        } else {
+            FluidState fluidState = ctx.getWorld().getFluidState(blockPos);
+            return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+        }
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
+        super.appendProperties(builder);
+    }
+
+    @Override
+    protected FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+    }
+
+    @Override
+    protected BlockState getStateForNeighborUpdate(
+            BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos
+    ) {
+        if (state.get(WATERLOGGED)) {
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        }
+
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
         return SHAPE;
@@ -46,8 +91,8 @@ public class PickleJarBlock extends ModelBlockWithEntity {
 
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity) {
-            return ((PickleJarBlockEntity)world.getBlockEntity(pos)).onUse(world, player, player.preferredHand, pos);
+        if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity pickleJarBlockEntity) {
+            return pickleJarBlockEntity.onUse(world, player, player.preferredHand, pos);
         }
         return ActionResult.FAIL;
     }
@@ -78,8 +123,8 @@ public class PickleJarBlock extends ModelBlockWithEntity {
 
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity) {
-            return ((PickleJarBlockEntity)world.getBlockEntity(pos)).areItemsPickled() ? 15 : 0;
+        if(world.getBlockEntity(pos) instanceof PickleJarBlockEntity pickleJarBlockEntity) {
+            return pickleJarBlockEntity.areItemsPickled() ? 15 : 0;
         }
         return super.getComparatorOutput(state, world, pos);
     }

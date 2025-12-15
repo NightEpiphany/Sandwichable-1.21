@@ -8,6 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class SpreadType {
 
     public void finishUsing(ItemStack stack, World world, LivingEntity user) {}
 
-    public void onPour(ItemStack container, ItemStack spread) {}
+    public void onPour(ItemStack container, ItemStack spread, NbtCompound nbt) {}
 
     public String getTranslationKey(String id, ItemStack stack) { return "item.sandwichable.spread."+id; }
 

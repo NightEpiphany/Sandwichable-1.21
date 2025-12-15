@@ -5,10 +5,13 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.potion.Potion;
 
 import java.util.List;
 
+import static net.minecraft.component.DataComponentTypes.CUSTOM_DATA;
 import static net.minecraft.component.DataComponentTypes.POTION_CONTENTS;
 
 public class PotionSpreadType extends SpreadType {
@@ -18,8 +21,12 @@ public class PotionSpreadType extends SpreadType {
 
     @Override
     public int getColor(ItemStack stack) {
-        if (!stack.contains(POTION_CONTENTS)) return 0;
-        return stack.get(POTION_CONTENTS).getColor();
+        if (!stack.contains(CUSTOM_DATA)) return 0x8C0023;
+        var nbt = stack.get(CUSTOM_DATA).copyNbt();
+        if (nbt.contains("potionEffects", NbtElement.COMPOUND_TYPE)) {
+            return nbt.getInt("color");
+        }
+        return 0x8C0023;
     }
 
     @Override
@@ -31,10 +38,18 @@ public class PotionSpreadType extends SpreadType {
     }
 
     @Override
-    public void onPour(ItemStack container, ItemStack spread) {
-        if (!container.contains(POTION_CONTENTS)) return;
-        var potion = container.get(POTION_CONTENTS);
-        spread.set(POTION_CONTENTS, potion);
+    public void onPour(ItemStack container, ItemStack spread, NbtCompound nbt) {
+        if (container.contains(POTION_CONTENTS)) {
+            var contents = container.get(POTION_CONTENTS);
+            NbtCompound contentsNbt = new NbtCompound();
+            contents.forEachEffect(effect -> {
+                contentsNbt.putString("effect", effect.getEffectType().getIdAsString());
+                contentsNbt.putInt("duration", effect.getDuration());
+                nbt.putInt("amplifier", effect.getAmplifier());
+                nbt.putInt("color", effect.getEffectType().value().getColor());
+            });
+            nbt.put("potionEffects", contentsNbt);
+        }
     }
 
     @Override

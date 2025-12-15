@@ -24,8 +24,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import static net.minecraft.component.DataComponentTypes.BLOCK_ENTITY_DATA;
-import static net.minecraft.component.DataComponentTypes.FOOD;
+import static net.minecraft.component.DataComponentTypes.*;
 
 public class SandwichBlockItem extends InfoTooltipBlockItem {
 
@@ -98,14 +97,14 @@ public class SandwichBlockItem extends InfoTooltipBlockItem {
     }
 
     @Override
-    public ItemStack finishUsing(ItemStack istack, World world, LivingEntity user) {
-        ItemStack stack = istack.copy();
+    public ItemStack finishUsing(ItemStack iStack, World world, LivingEntity user) {
+        ItemStack stack = iStack.copy();
         if(stack.contains(BLOCK_ENTITY_DATA)) {
             NbtCompound tag = stack.get(BLOCK_ENTITY_DATA).copyNbt();
             cache.setFromNbt(tag, world.getRegistryManager());
             ItemStack finishStack;
             ItemCooldownManager cooldownManager = null;
-            if(user instanceof PlayerEntity) cooldownManager = ((PlayerEntity)user).getItemCooldownManager();
+            if(user instanceof PlayerEntity player) cooldownManager = player.getItemCooldownManager();
             for(int i = 0; i < cache.getSize(); i++) {
                 ItemStack food = cache.getFoodList().get(i);
                 if(food.contains(FOOD)) {
@@ -118,7 +117,8 @@ public class SandwichBlockItem extends InfoTooltipBlockItem {
                             cooldownManager.set(this, 20);
                         }
                     }
-                    user.eatFood(world, food, food.get(FOOD));
+                    if (food.contains(FOOD))
+                        user.eatFood(world, food, food.get(FOOD));
                 }
             }
         }

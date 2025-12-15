@@ -25,10 +25,10 @@ public class SpreadRegistry {
     public static final SpreadType MUSHROOM_STEW = new SpreadType(6, 0.6F, 0xAD7451, Items.MUSHROOM_STEW, Items.BOWL);
     public static final SpreadType RABBIT_STEW = new SpreadType(10, 0.6F, 0xBF7234, Items.RABBIT_STEW, Items.BOWL);
     public static final SpreadType BEETROOT_SOUP = new SpreadType(6, 0.6F, 0x8C0023, Items.BEETROOT_SOUP, Items.BOWL);
-    public static final SpreadType HONEY = new HoneySpreadType();
-    public static final SpreadType SUSPICIOUS_STEW = new SuspiciousStewSpreadType();
-    public static final SpreadType FERMENTING_MILK = new FermentingMilkSpreadType();
-    public static final SpreadType POTION = new PotionSpreadType();
+    public static final HoneySpreadType HONEY = new HoneySpreadType();
+    public static final SuspiciousStewSpreadType SUSPICIOUS_STEW = new SuspiciousStewSpreadType();
+    public static final FermentingMilkSpreadType FERMENTING_MILK = new FermentingMilkSpreadType();
+    public static final PotionSpreadType POTION = new PotionSpreadType();
     public static final SpreadType SWEET_BERRY_JAM = new SpreadType(5, 0.5F, 0xF00024,ItemsRegistry.SWEET_BERRY_JAM, Items.GLASS_BOTTLE);
     public static final SpreadType GLOW_BERRY_JAM = new SpreadType(5, 0.5F, 0xFFCB54, ItemsRegistry.GLOW_BERRY_JAM, Items.GLASS_BOTTLE);
     public static final SpreadType MAYONNAISE = new SpreadType(4, 0.6F, 0xFFD5B5, ItemsRegistry.MAYONNAISE, Items.GLASS_BOTTLE);

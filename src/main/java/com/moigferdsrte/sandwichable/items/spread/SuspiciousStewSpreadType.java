@@ -40,7 +40,15 @@ public class SuspiciousStewSpreadType extends SpreadType {
     }
 
     @Override
-    public void onPour(ItemStack container, ItemStack spread) {
-        spread.set(SUSPICIOUS_STEW_EFFECTS, container.get(SUSPICIOUS_STEW_EFFECTS));
+    public void onPour(ItemStack container, ItemStack spread, NbtCompound nbt) {
+        if (container.contains(SUSPICIOUS_STEW_EFFECTS)) {
+            var sus = container.get(SUSPICIOUS_STEW_EFFECTS);
+            NbtCompound contentsNbt = new NbtCompound();
+            for (var effect : sus.effects()) {
+                contentsNbt.putString("effect", effect.effect().getIdAsString());
+                contentsNbt.putInt("duration", effect.duration());
+            }
+            nbt.put("stewEffects", contentsNbt);
+        }
     }
 }
