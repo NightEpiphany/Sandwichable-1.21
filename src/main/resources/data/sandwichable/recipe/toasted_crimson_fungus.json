@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:toasting_recipe",
+	"input": {
+		"item": "minecraft:crimson_fungus"
+	},
+	"output": {
+		"count": 1,
+		"id": "sandwichable:toasted_crimson_fungus"
+	}
+}

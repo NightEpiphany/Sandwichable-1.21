@@ -1,7 +1,0 @@
-{
-	"type": "sandwichable:toasting_recipe",
-	"input": {
-		"item": "minecraft:porkchop"
-	},
-	"output": "minecraft:cooked_porkchop"
-}

@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:toasting_recipe",
+	"input": {
+		"item": "sandwichable:shrub"
+	},
+	"output": {
+		"count": 1,
+		"id": "minecraft:dead_bush"
+	}
+}

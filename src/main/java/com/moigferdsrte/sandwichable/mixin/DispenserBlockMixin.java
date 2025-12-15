@@ -1,0 +1,38 @@
+package com.moigferdsrte.sandwichable.mixin;
+
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
+import com.moigferdsrte.sandwichable.util.ExtraDispenserBehaviorRegistry;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.dispenser.DispenserBehavior;
+import net.minecraft.block.entity.DispenserBlockEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPointer;
+import net.minecraft.util.math.BlockPos;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.List;
+
+@Mixin(DispenserBlock.class)
+public class DispenserBlockMixin {
+    @Definition(id = "getStack", method = "Lnet/minecraft/block/entity/DispenserBlockEntity;getStack(I)Lnet/minecraft/item/ItemStack;")
+    @Expression("? = ?.getStack(?)")
+    @Inject(method = "dispense", at = @At(value = "MIXINEXTRAS:EXPRESSION", shift = At.Shift.AFTER), cancellable = true, locals = LocalCapture.CAPTURE_FAILSOFT)
+    public void sandwichable$interrupt(ServerWorld world, BlockState state, BlockPos pos, CallbackInfo ci, DispenserBlockEntity dispenserBlockEntity, BlockPointer blockPointer, int i, ItemStack stack) {
+        List<DispenserBehavior> behaviors = ExtraDispenserBehaviorRegistry.ENTRIES.get(stack.getItem());
+        if(behaviors == null) return;
+        for(DispenserBehavior behavior : behaviors) {
+            ItemStack d = behavior.dispense(blockPointer, stack);
+            if(d != null) {
+                dispenserBlockEntity.setStack(i, d);
+                ci.cancel();
+            }
+        }
+    }
+}

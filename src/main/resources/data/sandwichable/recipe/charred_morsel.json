@@ -1,0 +1,10 @@
+{
+  "type": "sandwichable:toasting_recipe",
+  "input": {
+    "item": "sandwichable:burnt_morsel"
+  },
+  "output": {
+		"count": 1,
+		"id": "sandwichable:charred_morsel"
+	}
+}

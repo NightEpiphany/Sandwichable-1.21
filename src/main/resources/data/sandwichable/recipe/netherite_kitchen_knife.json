@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "base": {
+    "item": "sandwichable:diamond_kitchen_knife"
+  },
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "result": {
+	"count": 1,
+    "id": "sandwichable:netherite_kitchen_knife"
+  },
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
+}

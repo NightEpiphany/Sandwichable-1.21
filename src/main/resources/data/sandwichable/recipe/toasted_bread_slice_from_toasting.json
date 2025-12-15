@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:toasting_recipe",
+	"input": {
+		"tag": "c:bread_slice"
+	},
+	"output": {
+		"count": 1,
+		"id": "sandwichable:toasted_bread_slice"
+	}
+}

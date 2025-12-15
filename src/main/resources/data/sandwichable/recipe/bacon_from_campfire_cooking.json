@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 500,
+  "experience": 0.4,
+  "ingredient": {
+    "tag": "c:pork_filet"
+  },
+  "result": {
+    "id": "sandwichable:bacon_strips"
+  }
+}

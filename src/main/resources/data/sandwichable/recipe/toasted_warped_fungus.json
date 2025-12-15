@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:toasting_recipe",
+	"input": {
+		"item": "minecraft:warped_fungus"
+	},
+	"output": {
+		"count": 1,
+		"id": "sandwichable:toasted_warped_fungus"
+	}
+}

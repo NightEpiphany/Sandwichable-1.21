@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "tag": "c:cod_filet"
+  },
+  "result":{ "id": "sandwichable:cooked_cod_filet" },
+  "experience": 0.25,
+  "cookingtime": 200
+}

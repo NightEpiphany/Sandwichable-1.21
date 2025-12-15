@@ -1,49 +1,41 @@
 {
-  "schemaVersion": 1,
-  "id": "sandwichable",
-  "version": "${version}",
-
-  "name": "Sandwichable",
-  "description": "Sandwiches. Go nuts.",
-  "authors": [
-    "FoundationGames"
-  ],
-  "contact": {
-    "homepage": "https://github.com/FoundationGames/Sandwichable",
-    "sources": "https://github.com/FoundationGames/Sandwichable"
-  },
-
-  "license": "MIT License",
-  "icon": "assets/sandwichable/icon.png",
-
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "io.github.foundationgames.sandwichable.Sandwichable"
-    ],
-	"client": [
-      "io.github.foundationgames.sandwichable.SandwichableClient"
-    ],
-    "mealapi": [
-      "io.github.foundationgames.sandwichable.plugin.SandwichableMealAPI"
-    ],
-	"rei_client": [
-      "io.github.foundationgames.sandwichable.plugin.rei.SandwichableREI"
-    ],
-    "modmenu": [
-      "io.github.foundationgames.sandwichable.plugin.SandwichableModMenu"
-    ],
-    "appleskin": [
-      "io.github.foundationgames.sandwichable.plugin.SandwichableAppleSkin"
-    ]
-  },
-  "mixins": [
-	"sandwichable.mixins.json"
-  ],
-  "accessWidener": "sandwichable.accesswidener",
-  "depends": {
-    "fabricloader": ">=0.11.0",
-    "fabric": ">=0.39.0",
-    "minecraft": "1.20.x"
-  }
+	"schemaVersion": 1,
+	"id": "sandwichable",
+	"version": "${version}",
+	"name": "Sandwichable",
+	"description": "Sandwiches. Go nuts.",
+	"authors": [
+		"FoundationGames","NightEpiphany"
+	],
+	"contact": {
+		"homepage": "https://github.com/FoundationGames/Sandwichable",
+		"sources": "https://github.com/FoundationGames/Sandwichable"
+	},
+	"license": "MIT",
+	"icon": "assets/sandwichable/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+		  "com.moigferdsrte.sandwichable.Sandwichable"
+		],
+		"client": [
+		  "com.moigferdsrte.sandwichable.SandwichableClient"
+		],
+		"appleskin": [
+			"com.moigferdsrte.sandwichable.compact.appleskin.SandwichableAppleSkin"
+		],
+		"modmenu": [
+			"com.moigferdsrte.sandwichable.compact.modmenu.SandwichableModMenu"
+		]
+	},
+	"mixins": [
+		"sandwichable.mixins.json"
+	],
+	"accessWidener": "sandwichable.accesswidener",
+	"depends": {
+		"fabricloader": ">=0.18.2",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
 }

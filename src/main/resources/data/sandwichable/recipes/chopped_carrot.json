@@ -1,8 +1,0 @@
-{
-	"type": "sandwichable:cutting_recipe",
-	"input": {
-		"item": "minecraft:carrot"
-	},
-	"outputItem": "sandwichable:chopped_carrot",
-	"outputCount": "2"
-}

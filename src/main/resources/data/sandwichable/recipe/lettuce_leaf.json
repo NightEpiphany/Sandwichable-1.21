@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:cutting_recipe",
+	"input": {
+		"tag": "c:lettuce_head"
+	},
+	"output": {
+		"count": 3,
+		"id": "sandwichable:lettuce_leaf"
+	}
+}

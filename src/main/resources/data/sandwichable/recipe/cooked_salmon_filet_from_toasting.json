@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:toasting_recipe",
+	"input": {
+		"tag": "c:salmon_filet"
+	},
+	"output": {
+		"count": 1,
+		"id": "sandwichable:cooked_salmon_filet"
+	}
+}

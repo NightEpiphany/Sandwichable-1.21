@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:cod_filet"
+  },
+  "result":{ "id": "sandwichable:cooked_cod_filet" },
+  "experience": 0.17,
+  "cookingtime": 100
+}

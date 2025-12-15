@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:cutting_recipe",
+	"input": {
+		"item": "minecraft:porkchop"
+	},
+	"output": {
+		"count": 3,
+		"id": "sandwichable:pork_cuts"
+	}
+}

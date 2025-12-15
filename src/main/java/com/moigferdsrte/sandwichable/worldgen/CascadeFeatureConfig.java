@@ -1,0 +1,26 @@
+package com.moigferdsrte.sandwichable.worldgen;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.block.BlockState;
+import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.world.gen.stateprovider.BlockStateProvider;
+
+public record CascadeFeatureConfig(BlockStateProvider innerDisc, BlockStateProvider outerDisc, int minDiscSize,
+                                   int maxDiscSize, BlockState pool, BlockState floor, BlockStateProvider base,
+                                   BlockStateProvider rocks) implements FeatureConfig {
+    public static final Codec<CascadeFeatureConfig> CODEC = RecordCodecBuilder.create((instance) ->
+            instance.group(
+                            BlockStateProvider.TYPE_CODEC.fieldOf("inner_disc").forGetter(c -> c.innerDisc),
+                            BlockStateProvider.TYPE_CODEC.fieldOf("outer_disc").forGetter(c -> c.outerDisc),
+                            Codec.INT.fieldOf("min_disc_size").forGetter(c -> c.minDiscSize),
+                            Codec.INT.fieldOf("max_disc_size").forGetter(c -> c.maxDiscSize),
+                            BlockState.CODEC.fieldOf("pool").forGetter(c -> c.pool),
+                            BlockState.CODEC.fieldOf("floor").forGetter(c -> c.floor),
+                            BlockStateProvider.TYPE_CODEC.fieldOf("base").forGetter(c -> c.base),
+                            BlockStateProvider.TYPE_CODEC.fieldOf("rocks").forGetter(c -> c.rocks)
+                    )
+                    .apply(instance, CascadeFeatureConfig::new));
+
+
+}

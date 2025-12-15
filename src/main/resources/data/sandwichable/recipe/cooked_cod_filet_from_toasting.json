@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:toasting_recipe",
+	"input": {
+		"tag": "c:cod_filet"
+	},
+	"output": {
+		"count": 1,
+		"id": "sandwichable:cooked_cod_filet"
+	}
+}

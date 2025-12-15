@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:cutting_recipe",
+	"input": {
+		"item": "minecraft:golden_apple"
+	},
+	"output": {
+		"count": 2,
+		"id": "sandwichable:golden_apple_slices"
+	}
+}

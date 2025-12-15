@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "tag": "c:chopped_onion"
+  },
+  "result": { "id": "sandwichable:cooked_chopped_onion" },
+  "experience": 0.4,
+  "cookingtime": 400
+}

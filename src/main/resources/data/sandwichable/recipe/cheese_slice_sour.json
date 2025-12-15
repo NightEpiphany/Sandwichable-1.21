@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:cutting_recipe",
+	"input": {
+		"item": "sandwichable:sour_cheese_wheel"
+	},
+	"output": {
+		"count": 5,
+		"id": "sandwichable:sour_cheese_slice"
+	}
+}

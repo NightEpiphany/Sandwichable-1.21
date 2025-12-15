@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "sandwichable:mushroom_stew_spread",
+    "sandwichable:rabbit_stew_spread",
+    "sandwichable:beetroot_soup_spread",
+    "sandwichable:honey_spread",
+    "sandwichable:suspicious_stew_spread",
+    "sandwichable:fermenting_milk_spread",
+    "sandwichable:potion_spread",
+    "sandwichable:glow_berry_spread",
+    "sandwichable:mayonnaise_spread",
+    "sandwichable:sweet_berry_spread"
+  ]
+}

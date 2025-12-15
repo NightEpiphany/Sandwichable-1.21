@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:campfire_cooking",
-  "ingredient": {
-    "tag": "c:tomato_slice"
-  },
-  "result": "sandwichable:cooked_tomato_slice",
-  "experience": 0.4,
-  "cookingtime": 400
-}

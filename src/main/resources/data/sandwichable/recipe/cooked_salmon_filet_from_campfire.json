@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "tag": "c:salmon_filet"
+  },
+  "result":{ "id": "sandwichable:cooked_salmon_filet" },
+  "experience": 0.25,
+  "cookingtime": 200
+}

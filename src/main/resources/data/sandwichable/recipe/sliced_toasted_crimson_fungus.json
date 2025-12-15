@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:cutting_recipe",
+	"input": {
+		"item": "sandwichable:toasted_crimson_fungus"
+	},
+	"output": {
+		"count": 2,
+		"id": "sandwichable:sliced_toasted_crimson_fungus"
+	}
+}

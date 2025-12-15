@@ -1,8 +1,0 @@
-{
-	"type": "sandwichable:cutting_recipe",
-	"input": {
-		"item": "minecraft:chicken"
-	},
-	"outputItem": "sandwichable:chicken_filet",
-	"outputCount": "2"
-}

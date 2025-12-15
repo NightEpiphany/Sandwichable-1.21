@@ -1,0 +1,154 @@
+package com.moigferdsrte.sandwichable.villager;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.moigferdsrte.sandwichable.registry.BlocksRegistry;
+import com.moigferdsrte.sandwichable.registry.ItemsRegistry;
+import com.moigferdsrte.sandwichable.util.Util;
+import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.entity.Entity;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.village.TradeOffer;
+import net.minecraft.village.TradeOffers;
+import net.minecraft.village.TradedItem;
+import net.minecraft.village.VillagerProfession;
+import net.minecraft.world.poi.PointOfInterestType;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+
+import static net.minecraft.component.DataComponentTypes.BLOCK_ENTITY_DATA;
+
+public class SandwichMakerProfession {
+    private static final Identifier SANDWICH_MAKER_POI_ID = Util.id("sandwich_maker_poi");
+    private static final RegistryKey<PointOfInterestType> SANDWICH_MAKER_POI_KEY = RegistryKey.of(RegistryKeys.POINT_OF_INTEREST_TYPE, SANDWICH_MAKER_POI_ID);
+
+    public static final VillagerProfession SANDWICH_MAKER = new VillagerProfession(
+            "sandwichable:sandwich_maker",
+            poi -> poi.matchesKey(SANDWICH_MAKER_POI_KEY),
+            poi -> poi.matchesKey(SANDWICH_MAKER_POI_KEY),
+            ImmutableSet.of(),
+            ImmutableSet.of(),
+            SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM
+    );
+
+    public static void init() {
+        PointOfInterestHelper.register(SANDWICH_MAKER_POI_ID, 1, 1, BlocksRegistry.SANDWICH_TABLE);
+
+        TradeOffers.PROFESSION_TO_LEVELED_TRADE.put(
+                SANDWICH_MAKER, Util.copyToFastUtilMap(ImmutableMap.of(
+                        1,
+                        new TradeOffers.Factory[]{
+                                new TradeOffers.BuyItemFactory(Items.WHEAT, 20, 16, 2),
+                                new TradeOffers.BuyItemFactory(Items.BREAD, 6, 12, 2),
+                                new TradeOffers.BuyItemFactory(ItemsRegistry.TOMATO, 18, 16, 2),
+                                new TradeOffers.BuyItemFactory(ItemsRegistry.LETTUCE_HEAD, 14, 16, 2),
+                                new TradeOffers.SellItemFactory(ItemsRegistry.BREAD_SLICE, 1, 10, 16, 1)
+                        },
+                        2,
+                        new TradeOffers.Factory[]{
+                                new SellSandwichFactory(5, SellableSandwiches.APPLE.getItems(), 6, 7),
+                                new TradeOffers.BuyItemFactory(Items.BUCKET, 1, 12, 5),
+                                new TradeOffers.BuyItemFactory(Items.PORKCHOP, 18, 12, 3),
+                                new TradeOffers.SellItemFactory(ItemsRegistry.CHEESE_SLICE_REGULAR, 2, 10, 4, 1),
+                        },
+                        3,
+                        new TradeOffers.Factory[]{
+                                new SellSandwichFactory(10, SellableSandwiches.BACON_LETTUCE_TOMATO.getItems(), 6, 8),
+                                new SellSandwichFactory(10, SellableSandwiches.CHICKEN_CHEESE.getItems(), 6, 8),
+                                new TradeOffers.SellItemFactory(ItemsRegistry.TOASTED_BREAD_SLICE, 1, 7, 16, 1),
+                                new TradeOffers.BuyItemFactory(Items.COOKED_BEEF, 14, 12, 5),
+                                new TradeOffers.BuyItemFactory(Items.POTATO, 20, 12, 4)
+                        },
+                        4,
+                        new TradeOffers.Factory[]{
+                                new SellSandwichFactory(16, SellableSandwiches.MEAT_LOVERS.getItems(), 6, 12),
+                                new SellSandwichFactory(16, SellableSandwiches.VEGETABLE.getItems(), 6, 12),
+                                new TradeOffers.SellItemFactory(Items.CHARCOAL, 1, 3, 12, 5),
+                                new TradeOffers.BuyItemFactory(Items.CARROT, 20, 16, 5)
+                        },
+                        5,
+                        new TradeOffers.Factory[]{
+                                new SellSandwichFactory(25, SellableSandwiches.GOLDEN_APPLE.getItems(), 6, 17),
+                                new SellCheeseFactory(4, 12, 6),
+                        }
+                ))
+        );
+        Registry.register(Registries.VILLAGER_PROFESSION, Util.id("sandwich_maker"), SANDWICH_MAKER);
+    }
+
+    public static class SellCheeseFactory implements TradeOffers.Factory {
+        final int price;
+        final int experience;
+        final int maxUses;
+        final Item[] cheeses = {ItemsRegistry.CHEESE_WHEEL_REGULAR, ItemsRegistry.CHEESE_WHEEL_CREAMY, ItemsRegistry.CHEESE_WHEEL_INTOXICATING, ItemsRegistry.CHEESE_WHEEL_SOUR};
+
+        public SellCheeseFactory(int price, int uses, int exp) {
+            this.maxUses = uses;
+            this.experience = exp;
+            this.price = price;
+        }
+
+        @Nullable
+        public TradeOffer create(Entity entity, Random random) {
+            ItemStack itemStack = new ItemStack(cheeses[random.nextInt(cheeses.length)], 1);
+            return new TradeOffer(new TradedItem(Items.EMERALD, this.price), itemStack, maxUses, this.experience, 0.2F);
+        }
+    }
+
+    public static class SellSandwichFactory implements TradeOffers.Factory {
+        final int price;
+        final Item[] items;
+        final int experience;
+        final int maxUses;
+
+        public SellSandwichFactory(int price, Item[] items, int uses, int exp) {
+            this.items = items;
+            this.maxUses = uses;
+            this.experience = exp;
+            this.price = price;
+        }
+
+        @Nullable
+        public TradeOffer create(Entity entity, Random random) {
+            ItemStack stack = new ItemStack(BlocksRegistry.SANDWICH, 1);
+            DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(items.length);
+            defaultedList.addAll(Arrays.stream(items).map(ItemStack::new).toList());
+            stack.set(BLOCK_ENTITY_DATA, NbtComponent.of(Inventories.writeNbt(new NbtCompound(), defaultedList, entity.getWorld().getRegistryManager())));
+            TradedItem tradedItem = new TradedItem(Items.EMERALD, this.price);
+            return new TradeOffer(tradedItem, stack, maxUses, this.experience, 0.2F);
+        }
+    }
+
+    public enum SellableSandwiches {
+        APPLE(new Item[]{Items.BREAD, Items.APPLE, Items.BREAD}),
+        BACON_LETTUCE_TOMATO(new Item[]{ItemsRegistry.BREAD_SLICE, ItemsRegistry.BACON_STRIPS, ItemsRegistry.LETTUCE_LEAF, ItemsRegistry.TOMATO_SLICE, ItemsRegistry.BREAD_SLICE}),
+        CHICKEN_CHEESE(new Item[]{ItemsRegistry.TOASTED_BREAD_SLICE, ItemsRegistry.CHEESE_SLICE_REGULAR, Items.COOKED_CHICKEN, ItemsRegistry.LETTUCE_LEAF, ItemsRegistry.TOASTED_BREAD_SLICE}),
+        MEAT_LOVERS(new Item[]{Items.BREAD, ItemsRegistry.BACON_STRIPS, Items.COOKED_BEEF, Items.COOKED_CHICKEN, Items.COOKED_PORKCHOP, Items.BREAD}),
+        VEGETABLE(new Item[]{Items.BREAD, ItemsRegistry.LETTUCE_LEAF, Items.CARROT, Items.BEETROOT, Items.BAKED_POTATO, ItemsRegistry.TOMATO_SLICE, Items.BREAD}),
+        GOLDEN_APPLE(new Item[]{Items.BREAD, Items.GOLDEN_APPLE, Items.BREAD});
+
+        final Item[] items;
+
+        SellableSandwiches(Item[] items) {
+            this.items = items;
+        }
+
+        public Item[] getItems() {
+            return items;
+        }
+    }
+}

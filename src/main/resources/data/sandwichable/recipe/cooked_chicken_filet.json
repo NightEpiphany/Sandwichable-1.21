@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "c:chicken_filet"
+  },
+  "result": { "id": "sandwichable:cooked_chicken_filet" },
+  "experience": 0.17,
+  "cookingtime": 100
+}

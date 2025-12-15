@@ -1,8 +1,0 @@
-{
-	"type": "sandwichable:cutting_recipe",
-	"input": {
-		"item": "minecraft:enchanted_golden_apple"
-	},
-	"outputItem": "sandwichable:enchanted_golden_apple_slices",
-	"outputCount": "2"
-}

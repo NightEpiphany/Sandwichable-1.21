@@ -1,8 +1,0 @@
-{
-	"type": "sandwichable:cutting_recipe",
-	"input": {
-		"tag": "c:tomato"
-	},
-	"outputItem": "sandwichable:tomato_slice",
-	"outputCount": "2"
-}

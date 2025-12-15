@@ -1,8 +1,0 @@
-{
-	"type": "sandwichable:cutting_recipe",
-	"input": {
-		"item": "minecraft:porkchop"
-	},
-	"outputItem": "sandwichable:pork_cuts",
-	"outputCount": "3"
-}

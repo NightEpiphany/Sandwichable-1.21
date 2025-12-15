@@ -1,0 +1,10 @@
+{
+	"type": "sandwichable:toasting_recipe",
+	"input": {
+		"item": "minecraft:chorus_fruit"
+	},
+	"output": {
+		"count": 1,
+		"id": "minecraft:popped_chorus_fruit"
+	}
+}

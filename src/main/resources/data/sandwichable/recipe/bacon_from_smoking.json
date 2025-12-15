@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "tag": "c:pork_filet"
+  },
+  "result": {
+    "id": "sandwichable:bacon_strips"
+  },
+  "experience": 0.4,
+  "cookingtime": 100
+}

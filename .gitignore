@@ -24,7 +24,17 @@ bin/
 .classpath
 .project
 
+# macos
+
+*.DS_Store
+
 # fabric
 
 run/
-localjars/
+
+# java
+
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr

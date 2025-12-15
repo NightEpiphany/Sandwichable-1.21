@@ -119,6 +119,16 @@
 	"item.sandwichable.spread.glow_berry_jam": "Glow Berry Jam",
 	"item.sandwichable.spread.mayonnaise": "Mayonnaise",
 	"item.sandwichable.spread.potion": "Potion",
+	"item.sandwichable.mushroom_stew_spread": "Mushroom Stew Spread",
+	"item.sandwichable.rabbit_stew_spread": "Rabbit Stew Spread",
+	"item.sandwichable.beetroot_soup_spread": "Beetroot Soup Spread",
+	"item.sandwichable.suspicious_stew_spread": "Suspicious Stew Spread",
+	"item.sandwichable.honey_spread": "Honey Spread",
+	"item.sandwichable.fermenting_milk_spread": "Fermenting Milk Spread",
+	"item.sandwichable.sweet_berry_spread": "Sweet Berry Jam Spread",
+	"item.sandwichable.glow_berry_spread": "Glow Berry Jam Spread",
+	"item.sandwichable.mayonnaise_spread": "Mayonnaise Spread",
+	"item.sandwichable.potion_spread": "Potion Spread",
 	
 	"block.sandwichable.sandwich_table": "Sandwich Table",
 	"block.sandwichable.sandwich": "Sandwich",
@@ -344,5 +354,6 @@
 	"block.sandwichable.salty_sand.info": "An ore-like block found in beaches and oceans, which can be broken to obtain a Salt Rock and some sand.",
 	"block.sandwichable.salty_rocks.info": "An unobtainable block lining the edges of naturally generated salt pools. Water on top of this block will be saline, meaning a desalinator will work on top of this block.",
 	"block.sandwichable.salty_stone.info": "An unobtainable block lining the floor of naturally generated salt pools. Water on top of this block will be saline, meaning a desalinator will work on top of this block.",
-	"block.sandwichable.desalinator.info": "A machine used to extract salt from beach and ocean water. Is fueled by redstone dust as an item, unlike the Redstone Toaster, and can be waterlogged to fill its tank. Will produce salt if it is in a salty biome."
+	"block.sandwichable.desalinator.info": "A machine used to extract salt from beach and ocean water. Is fueled by redstone dust as an item, unlike the Redstone Toaster, and can be waterlogged to fill its tank. Will produce salt if it is in a salty biome.",
+	"cheese.type.dairy_free": "Dairy Free"
 }
