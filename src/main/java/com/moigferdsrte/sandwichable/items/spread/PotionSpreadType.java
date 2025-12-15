@@ -43,9 +43,12 @@ public class PotionSpreadType extends SpreadType {
             var contents = container.get(POTION_CONTENTS);
             NbtCompound contentsNbt = new NbtCompound();
             contents.forEachEffect(effect -> {
-                contentsNbt.putString("effect", effect.getEffectType().getIdAsString());
-                contentsNbt.putInt("duration", effect.getDuration());
-                nbt.putInt("amplifier", effect.getAmplifier());
+                if (!contentsNbt.contains("effect")) contentsNbt.putString("effect", effect.getEffectType().getIdAsString());
+                else contentsNbt.putString("effect2", effect.getEffectType().getIdAsString());
+                if (!contentsNbt.contains("duration")) contentsNbt.putInt("duration", effect.getDuration());
+                else contentsNbt.putInt("duration2", effect.getDuration());
+                if (!contentsNbt.contains("amplifier")) nbt.putInt("amplifier", effect.getAmplifier());
+                else nbt.putInt("amplifier2", effect.getAmplifier());
                 nbt.putInt("color", effect.getEffectType().value().getColor());
             });
             nbt.put("potionEffects", contentsNbt);

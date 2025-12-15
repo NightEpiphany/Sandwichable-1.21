@@ -9,6 +9,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -16,10 +18,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.potion.Potion;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -107,11 +116,21 @@ public class SandwichBlockItem extends InfoTooltipBlockItem {
             if(user instanceof PlayerEntity player) cooldownManager = player.getItemCooldownManager();
             for(int i = 0; i < cache.getSize(); i++) {
                 ItemStack food = cache.getFoodList().get(i);
+                if (food.contains(CUSTOM_DATA)) {
+                    var custom = food.get(CUSTOM_DATA).copyNbt();
+                    if (custom.contains("potionEffects", NbtElement.COMPOUND_TYPE)) {
+                        var potion = custom.getCompound("potionEffects");
+                        extractEffect(user, potion);
+                    }else if (custom.contains("stewEffects", NbtElement.COMPOUND_TYPE)) {
+                        var potion = custom.getCompound("stewEffects");
+                        extractEffect(user, potion);
+                    }
+                }
                 if(food.contains(FOOD)) {
                     finishStack = food.getItem().finishUsing(food, world, user);
-                    if(user instanceof PlayerEntity) {
-                        if(!((PlayerEntity)user).isCreative() && !finishStack.getItem().equals(Items.AIR)) {
-                            ((PlayerEntity)user).giveItemStack(finishStack);
+                    if(user instanceof PlayerEntity player) {
+                        if(!(player.isCreative() && !finishStack.getItem().equals(Items.AIR))) {
+                            player.giveItemStack(finishStack);
                         }
                         if(cooldownManager != null && cooldownManager.isCoolingDown(food.getItem())) {
                             cooldownManager.set(this, 20);
@@ -123,6 +142,25 @@ public class SandwichBlockItem extends InfoTooltipBlockItem {
             }
         }
         return super.finishUsing(stack, world, user);
+    }
+
+    private void extractEffect(LivingEntity user, NbtCompound potion) {
+        if (potion.contains("effect2")) {
+            String ins2 = potion.getString("effect2");
+            Identifier effectId = Identifier.tryParse(ins2);
+            StatusEffect potions = Registries.STATUS_EFFECT.get(effectId);
+            if (potions != null) {
+                RegistryKey<StatusEffect> key = RegistryKey.of(RegistryKeys.STATUS_EFFECT, effectId);
+                Registries.STATUS_EFFECT.getEntry(key).ifPresent(entry -> user.addStatusEffect(new StatusEffectInstance(entry, potion.getInt("duration2"), potion.getInt("amplifier2"))));
+            }
+        }
+        String ins = potion.getString("effect");
+        Identifier effectId = Identifier.tryParse(ins);
+        StatusEffect potions = Registries.STATUS_EFFECT.get(effectId);
+        if (potions != null) {
+            RegistryKey<StatusEffect> key = RegistryKey.of(RegistryKeys.STATUS_EFFECT, effectId);
+            Registries.STATUS_EFFECT.getEntry(key).ifPresent(entry -> user.addStatusEffect(new StatusEffectInstance(entry, potion.getInt("duration"), potion.getInt("amplifier"))));
+        }
     }
 
     @Override

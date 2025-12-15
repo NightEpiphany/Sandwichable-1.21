@@ -37,6 +37,11 @@ public class Util {
 
     public static String MOD_ID = "sandwichable";
 
+    public static String effectNameTransfer(String effectName) {
+        if (effectName.contains("speed")) return "minecraft:swiftness";
+        return effectName;
+    }
+
     public static Identifier id(String name) {
         return Identifier.of(MOD_ID, name);
     }
