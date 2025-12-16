@@ -29,6 +29,7 @@
     "ClientWorldMixin",
     "ContinuousFallingParticleMixin",
     "CrackParticleMixin",
-    "DrippingParticleMixin"
+    "DrippingParticleMixin",
+    "ModelLoaderMixin"
   ]
 }
