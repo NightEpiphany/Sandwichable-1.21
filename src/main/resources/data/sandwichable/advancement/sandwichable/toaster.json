@@ -2,13 +2,14 @@
   "parent": "sandwichable:sandwichable/root",
   "display": {
     "icon": {
-      "item": "sandwichable:sandwich_table"
+	  "count": 1,
+      "id": "sandwichable:toaster"
     },
     "title": {
-      "translate": "advancements.sandwichable.sandwich_table.title"
+      "translate": "advancements.sandwichable.toaster.title"
     },
     "description": {
-      "translate": "advancements.sandwichable.sandwich_table.description"
+      "translate": "advancements.sandwichable.toaster.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,12 +17,12 @@
     "hidden": false
   },
   "criteria": {
-    "table": {
+    "toaster": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": ["sandwichable:sandwich_table"]
+            "items": ["sandwichable:toaster"]
           }
         ]
       }
@@ -29,7 +30,7 @@
   },
   "requirements": [
     [
-      "table"
+      "toaster"
     ]
   ]
 }

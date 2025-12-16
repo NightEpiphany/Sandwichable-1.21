@@ -2,13 +2,14 @@
   "parent": "sandwichable:sandwichable/root",
   "display": {
     "icon": {
-      "item": "sandwichable:desalinator"
+	  "count": 1,
+      "id": "sandwichable:sandwich_table"
     },
     "title": {
-      "translate": "advancements.sandwichable.desalinator.title"
+      "translate": "advancements.sandwichable.sandwich_table.title"
     },
     "description": {
-      "translate": "advancements.sandwichable.desalinator.description"
+      "translate": "advancements.sandwichable.sandwich_table.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,12 +17,12 @@
     "hidden": false
   },
   "criteria": {
-    "desalinator": {
+    "table": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": ["sandwichable:desalinator"]
+            "items": ["sandwichable:sandwich_table"]
           }
         ]
       }
@@ -29,7 +30,7 @@
   },
   "requirements": [
     [
-      "desalinator"
+      "table"
     ]
   ]
 }

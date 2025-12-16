@@ -2,7 +2,8 @@
   "parent": "sandwichable:sandwichable/toaster",
   "display": {
     "icon": {
-      "item": "sandwichable:toasted_bread_slice"
+	  "count": 1,
+      "id": "sandwichable:toasted_bread_slice"
     },
     "title": {
       "translate": "advancements.sandwichable.toast_bread.title"

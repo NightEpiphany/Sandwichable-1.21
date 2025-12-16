@@ -2,7 +2,8 @@
   "parent": "sandwichable:sandwichable/root",
   "display": {
     "icon": {
-      "item": "sandwichable:kitchen_knife"
+	  "count": 1,
+      "id": "sandwichable:kitchen_knife"
     },
     "title": {
       "translate": "advancements.sandwichable.cut_item.title"

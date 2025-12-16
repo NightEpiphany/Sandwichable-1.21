@@ -12,6 +12,7 @@
     "FishingBobberEntityMixin",
     "HungerManagerMixin",
     "PistonBlockMixin",
+    "ServerPlayerEntityScreenHandlerListenerMixin",
     "ServerPlayerInteractionManagerMixin",
     "StructurePoolAccess",
     "VillagerEntityMixin"

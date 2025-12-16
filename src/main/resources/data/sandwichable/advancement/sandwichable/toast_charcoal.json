@@ -2,7 +2,8 @@
   "parent": "sandwichable:sandwichable/toast_bread",
   "display": {
     "icon": {
-      "item": "sandwichable:burnt_food"
+	  "count": 1,
+      "id": "sandwichable:burnt_food"
     },
     "title": {
       "translate": "advancements.sandwichable.toast_charcoal.title"

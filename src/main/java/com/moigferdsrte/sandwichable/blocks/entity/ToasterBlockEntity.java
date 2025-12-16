@@ -172,7 +172,7 @@ public class ToasterBlockEntity extends BlockEntity implements SidedInventory, S
                 ItemStack advStack = items.get(i);
                 this.getLastUser().ifPresent(player -> {
                     if (player instanceof ServerPlayerEntity) {
-                        //Sandwichable.TOAST_ITEM.trigger((ServerPlayerEntity) player, advStack);
+                        Sandwichable.TOAST_ITEM.trigger((ServerPlayerEntity) player, advStack);
                     }
                 });
             }

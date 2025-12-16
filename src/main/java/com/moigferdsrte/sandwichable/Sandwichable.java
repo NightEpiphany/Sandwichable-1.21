@@ -1,5 +1,9 @@
 package com.moigferdsrte.sandwichable;
 
+import com.moigferdsrte.sandwichable.advancement.CollectSandwichCriterion;
+import com.moigferdsrte.sandwichable.advancement.CutItemCriterion;
+import com.moigferdsrte.sandwichable.advancement.ToastItemCriterion;
+import com.moigferdsrte.sandwichable.advancement.UseBottleCrateCriterion;
 import com.moigferdsrte.sandwichable.blocks.entity.BottleCrateBlockEntity;
 import com.moigferdsrte.sandwichable.blocks.entity.DesalinatorBlockEntity;
 import com.moigferdsrte.sandwichable.blocks.entity.screen.BottleCrateScreenHandler;
@@ -106,6 +110,12 @@ public class Sandwichable implements ModInitializer {
 
 	public static final LootFunctionType<CopyWorldBiomeLootFunction> COPY_WORLD_BIOME = Registry.register(Registries.LOOT_FUNCTION_TYPE, Util.id("copy_world_biome"), new LootFunctionType<>(CopyWorldBiomeLootFunction.CODEC));
 	private static final Identifier ANCIENT_CITY_LOOT = Identifier.ofVanilla("chests/ancient_city");
+
+	public static final CutItemCriterion CUT_ITEM = Registry.register(Registries.CRITERION, Util.id("cut_item"), new CutItemCriterion());
+	public static final ToastItemCriterion TOAST_ITEM = Registry.register(Registries.CRITERION, Util.id("toast_item"), new ToastItemCriterion());
+	public static final UseBottleCrateCriterion USE_BOTTLE_CRATE = Registry.register(Registries.CRITERION, Util.id("use_bottle_crate"), new UseBottleCrateCriterion());
+	public static final CollectSandwichCriterion COLLECT_SANDWICH = Registry.register(Registries.CRITERION, Util.id("collect_sandwich"), new CollectSandwichCriterion());
+
 	@Override
 	public void onInitialize() {
 		Registry.register(Registries.ITEM_GROUP, SANDWICHABLE_ITEMS.id, SANDWICHABLE_GROUP);

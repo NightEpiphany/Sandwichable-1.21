@@ -2,8 +2,11 @@
   "parent": "sandwichable:sandwichable/sandwich_blt",
   "display": {
     "icon": {
-      "item": "sandwichable:sandwich",
-	  "nbt": "{BlockEntityTag:{Items:[{id:\"sandwichable:bacon_strips\",Count:1b},{id:\"sandwichable:cooked_pork_cuts\",Count:1b},{id:\"sandwichable:chicken_filet\",Count:1b},{id:\"sandwichable:toasted_bread_slice\",Count:1b}]}}"
+	  "count": 1,
+      "id": "sandwichable:sandwich",
+      "components": {
+        "minecraft:block_entity_data": "{DisplayValues:{hunger:43,saturation:5.72f},Items:[{Count:1b,id:\"sandwichable:toasted_bread_slice\"},{Count:1b,id:\"sandwichable:cooked_cod_filet\"},{Count:1b,id:\"minecraft:cooked_porkchop\"},{Count:1b,id:\"sandwichable:cooked_chicken_filet\"},{Count:1b,id:\"sandwichable:cooked_salmon_filet\"},{Count:1b,id:\"sandwichable:bacon_strips\"},{Count:1b,id:\"sandwichable:cooked_chicken_filet\"},{Count:1b,id:\"minecraft:cooked_porkchop\"},{Count:1b,id:\"sandwichable:cooked_cod_filet\"},{Count:1b,id:\"sandwichable:toasted_bread_slice\"}],id:\"Contents\"}"
+      }
     },
     "title": {
       "translate": "advancements.sandwichable.sandwich_meat.title"
@@ -20,7 +23,7 @@
     "sandwich": {
       "trigger": "sandwichable:collect_sandwich",
       "conditions": {
-        "foods": [
+        "items": [
           {
             "items": ["sandwichable:cooked_pork_cuts"]
           },

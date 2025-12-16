@@ -1,6 +1,7 @@
 package com.moigferdsrte.sandwichable.blocks.entity;
 
 import com.google.common.base.Objects;
+import com.moigferdsrte.sandwichable.Sandwichable;
 import com.moigferdsrte.sandwichable.blocks.extra.SyncedBlockEntity;
 import com.moigferdsrte.sandwichable.config.SandwichableConfig;
 import com.moigferdsrte.sandwichable.items.KitchenKnifeItem;
@@ -102,8 +103,8 @@ public class CuttingBoardBlockEntity extends BlockEntity implements SyncedBlockE
         }
         if (hasKnife && !item.isEmpty() && knife.isEmpty()) {
             slice(cut);
-            if (cut > 0 && player instanceof ServerPlayerEntity) {
-                //Sandwichable.CUT_ITEM.trigger((ServerPlayerEntity) player);
+            if (cut > 0 && player instanceof ServerPlayerEntity serverPlayerEntity) {
+                Sandwichable.CUT_ITEM.trigger(serverPlayerEntity);
             }
             if (!player.isCreative()) KitchenKnifeItem.processCut(player.getStackInHand(knifeHand), cut);
             if(knifeHand == Hand.OFF_HAND) player.swingHand(knifeHand);

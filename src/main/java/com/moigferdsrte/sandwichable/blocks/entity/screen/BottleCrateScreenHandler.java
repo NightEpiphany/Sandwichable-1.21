@@ -47,8 +47,8 @@ public class BottleCrateScreenHandler extends ScreenHandler {
         if (i >= 0 && i < this.slots.size()) {
             Slot slot = this.slots.get(i);
             if (actionType == SlotActionType.PICKUP && slot instanceof BottleSlot &&
-                    slot.canInsert(getCursorStack()) && playerEntity instanceof ServerPlayerEntity) {
-                //Sandwichable.USE_BOTTLE_CRATE.trigger((ServerPlayerEntity) playerEntity);
+                    slot.canInsert(getCursorStack()) && playerEntity instanceof ServerPlayerEntity serverPlayerEntity) {
+                Sandwichable.USE_BOTTLE_CRATE.trigger(serverPlayerEntity);
             }
         }
 
@@ -59,7 +59,7 @@ public class BottleCrateScreenHandler extends ScreenHandler {
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
-        if (slot != null && slot.hasStack()) {
+        if (slot.hasStack()) {
             ItemStack slotStack = slot.getStack();
             itemStack = slotStack.copy();
             if (invSlot < this.inventory.size()) {

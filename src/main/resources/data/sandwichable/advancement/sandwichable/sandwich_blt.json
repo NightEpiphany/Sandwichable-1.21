@@ -2,8 +2,11 @@
   "parent": "sandwichable:sandwichable/sandwich_table",
   "display": {
     "icon": {
-      "item": "sandwichable:sandwich",
-	  "nbt": "{BlockEntityTag:{Items:[{id:\"sandwichable:bacon_strips\",Count:1b},{id:\"sandwichable:lettuce_leaf\",Count:1b},{id:\"sandwichable:tomato_slice\",Count:1b},{id:\"sandwichable:bread_slice\",Count:1b}]}}"
+	  "count": 1,
+      "id": "sandwichable:sandwich",
+      "components": {
+        "minecraft:block_entity_data": "{DisplayValues:{hunger:27,saturation:3.4599998f},Items:[{Count:1b,id:\"sandwichable:toasted_bread_slice\"},{Count:1b,id:\"minecraft:beetroot\"},{Count:1b,id:\"sandwichable:bacon_strips\"},{Count:1b,id:\"sandwichable:lettuce_leaf\"},{Count:1b,id:\"sandwichable:bacon_strips\"},{Count:1b,id:\"sandwichable:tomato_slice\"},{Count:1b,id:\"sandwichable:tomato_slice\"},{Count:1b,id:\"sandwichable:tomato_slice\"},{Count:1b,id:\"minecraft:baked_potato\"},{Count:1b,id:\"sandwichable:toasted_bread_slice\"}],id:\"Contents\"}"
+      }
     },
     "title": {
       "translate": "advancements.sandwichable.sandwich_blt.title"
@@ -20,7 +23,7 @@
     "sandwich": {
       "trigger": "sandwichable:collect_sandwich",
       "conditions": {
-        "foods": [
+        "items": [
           {
             "items": ["sandwichable:bacon_strips"]
           },

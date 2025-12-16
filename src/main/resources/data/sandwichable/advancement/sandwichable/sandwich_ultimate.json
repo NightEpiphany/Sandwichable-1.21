@@ -1,0 +1,51 @@
+{
+  "parent": "sandwichable:sandwichable/sandwich_fruit",
+  "display": {
+    "icon": {
+      "count": 1,
+      "id": "sandwichable:sandwich",
+      "components": {
+        "minecraft:block_entity_data": "{DisplayValues:{hunger:18,saturation:3.7333333f},Items:[{Count:1b,id:\"sandwichable:toasted_bread_slice\"},{Count:1b,id:\"minecraft:chorus_fruit\"},{Count:1b,id:\"sandwichable:enchanted_golden_apple_slices\"},{Count:1b,id:\"sandwichable:potion_spread\",tag:{color:13458603,onLoaf:0b,potionEffects:{amplifier:1,duration:450,effect:\"minecraft:regeneration\"},spreadType:\"potion\"}},{Count:1b,id:\"sandwichable:enchanted_golden_apple_slices\"},{Count:1b,id:\"sandwichable:toasted_bread_slice\"}],id:\"Contents\"}"
+      }
+    },
+    "title": {
+      "translate": "advancements.sandwichable.sandwich_ultimate.title"
+    },
+    "description": {
+      "translate": "advancements.sandwichable.sandwich_ultimate.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "sandwich": {
+      "trigger": "sandwichable:collect_sandwich",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "sandwichable:enchanted_golden_apple_slices"
+            ]
+          },
+          {
+            "items": [
+              "minecraft:chorus_fruit"
+            ]
+          },
+          {
+            "items": [
+              "sandwichable:potion_spread"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "sandwich"
+    ]
+  ]
+}

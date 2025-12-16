@@ -2,7 +2,8 @@
   "parent": "sandwichable:sandwichable/cut_item",
   "display": {
     "icon": {
-      "item": "sandwichable:netherite_kitchen_knife"
+	  "count": 1,
+      "id": "sandwichable:netherite_kitchen_knife"
     },
     "title": {
       "translate": "advancements.sandwichable.netherite_knife.title"

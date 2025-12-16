@@ -1,8 +1,8 @@
 {
   "display": {
     "icon": {
-      "item": "sandwichable:sandwich",
-	  "nbt": "{BlockEntityTag:{Items:[{id:\"sandwichable:cheese_slice\",Count:1b},{id:\"sandwichable:bacon_strips\",Count:1b},{id:\"sandwichable:lettuce_leaf\",Count:1b},{id:\"sandwichable:tomato_slice\",Count:1b},{id:\"sandwichable:toasted_bread_slice\",Count:1b}]}}"
+	  "count": 1,
+      "id": "sandwichable:sandwich_book"
     },
     "title": {
       "translate": "advancements.sandwichable.root.title"

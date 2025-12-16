@@ -1,14 +1,15 @@
 {
-  "parent": "sandwichable:sandwichable/sandwich_table",
+  "parent": "sandwichable:sandwichable/salt",
   "display": {
     "icon": {
-      "item": "sandwichable:sandwich_table_minecart"
+	  "count": 1,
+      "id": "sandwichable:pickle_filled_pickle_jar"
     },
     "title": {
-      "translate": "advancements.sandwichable.sandwich_table_minecart.title"
+      "translate": "advancements.sandwichable.pickled_cucumber.title"
     },
     "description": {
-      "translate": "advancements.sandwichable.sandwich_table_minecart.description"
+      "translate": "advancements.sandwichable.pickled_cucumber.description"
     },
     "frame": "goal",
     "show_toast": true,
@@ -16,12 +17,12 @@
     "hidden": false
   },
   "criteria": {
-    "cart": {
+    "pickle": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": ["sandwichable:sandwich_table_minecart"]
+            "items": ["sandwichable:pickled_cucumber"]
           }
         ]
       }
@@ -29,7 +30,7 @@
   },
   "requirements": [
     [
-      "cart"
+      "pickle"
     ]
   ]
 }

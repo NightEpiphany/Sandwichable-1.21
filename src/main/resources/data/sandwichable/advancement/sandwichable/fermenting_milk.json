@@ -2,7 +2,8 @@
   "parent": "sandwichable:sandwichable/bottle_crate",
   "display": {
     "icon": {
-      "item": "sandwichable:fermenting_milk_bucket"
+	  "count": 1,
+      "id": "sandwichable:fermenting_milk_bucket"
     },
     "title": {
       "translate": "advancements.sandwichable.fermenting_milk.title"

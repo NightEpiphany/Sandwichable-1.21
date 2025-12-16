@@ -1,14 +1,15 @@
 {
-  "parent": "sandwichable:sandwichable/root",
+  "parent": "sandwichable:sandwichable/desalinator",
   "display": {
     "icon": {
-      "item": "sandwichable:toaster"
+	  "count": 1,
+      "id": "sandwichable:salt"
     },
     "title": {
-      "translate": "advancements.sandwichable.toaster.title"
+      "translate": "advancements.sandwichable.salt.title"
     },
     "description": {
-      "translate": "advancements.sandwichable.toaster.description"
+      "translate": "advancements.sandwichable.salt.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -16,12 +17,12 @@
     "hidden": false
   },
   "criteria": {
-    "toaster": {
+    "salt": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": ["sandwichable:toaster"]
+            "items": ["sandwichable:salt"]
           }
         ]
       }
@@ -29,7 +30,7 @@
   },
   "requirements": [
     [
-      "toaster"
+      "salt"
     ]
   ]
 }
