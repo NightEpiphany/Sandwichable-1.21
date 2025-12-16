@@ -1,6 +1,7 @@
 package com.moigferdsrte.sandwichable.registry;
 
 import com.moigferdsrte.sandwichable.Sandwichable;
+import com.moigferdsrte.sandwichable.components.SandwichableDataComponent;
 import com.moigferdsrte.sandwichable.fluids.FluidsRegistry;
 import com.moigferdsrte.sandwichable.items.*;
 import com.moigferdsrte.sandwichable.items.extra.CheeseType;
@@ -62,6 +63,7 @@ public final class ItemsRegistry {
 
     public static final Item SANDWICH = new SandwichBlockItem(BlocksRegistry.SANDWICH);
 
+    public static final Item SANDWICH_BOOK = new SandwichBookItem();
     public static final Item BREAD_SLICE = new InfoTooltipItem(new Item.Settings().food(BREADSLICE));
     public static final Item TOASTED_BREAD_SLICE = new InfoTooltipItem(new Item.Settings().food(TOASTEDBREADSLICE));
     public static final Item LETTUCE_HEAD = new InfoTooltipItem(new Item.Settings().food(LETTUCEHEAD));
@@ -167,6 +169,7 @@ public final class ItemsRegistry {
 
     public static void init() {
         registerInternalItem(SANDWICH, "sandwich");
+        registerInternalItem(SANDWICH_BOOK, "sandwich_book");
         registerItem(STONE_KITCHEN_KNIFE, "stone_kitchen_knife");
         registerItem(IRON_KITCHEN_KNIFE, "kitchen_knife");
         registerItem(GOLDEN_KITCHEN_KNIFE, "golden_kitchen_knife");

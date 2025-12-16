@@ -37,7 +37,8 @@
 	"advancements.sandwichable.sandwich_fruit.description": "Make a Sandwich with Apple Slices, a Melon Slice, Sweet Berries, and Honey",
 	"advancements.sandwichable.sandwich_ultimate.title": "Ultimate Sandwich",
 	"advancements.sandwichable.sandwich_ultimate.description": "Make an overpowered Sandwich with Enchanted Golden Apple Slices, Chorus Fruit, and a Potion",
-	
+
+	"item.sandwichable.sandwich_book": "Sandwich Book",
 	"item.sandwichable.bread_slice": "Bread Slice",
 	"item.sandwichable.toasted_bread_slice": "Toasted Bread Slice",
 	"item.sandwichable.ancient_grain_bread": "Ancient Grain Bread",

@@ -92,10 +92,6 @@ public class SandwichableConfig extends ConfigInABarrel {
         }
     }
 
-    @Override
-    protected void loadExtraData(JsonObject file) {
-    }
-
     public static class KitchenKnifeOption {
         public String itemId;
         public int value;
@@ -113,7 +109,7 @@ public class SandwichableConfig extends ConfigInABarrel {
         CTRL("control"),
         ALT("alt");
 
-        String name;
+        final String name;
 
         TooltipKeyBind(String name) { this.name = name; }
 
