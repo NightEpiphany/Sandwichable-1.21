@@ -47,9 +47,10 @@ public class PotionSpreadType extends SpreadType {
                 else contentsNbt.putString("effect2", effect.getEffectType().getIdAsString());
                 if (!contentsNbt.contains("duration")) contentsNbt.putInt("duration", effect.getDuration());
                 else contentsNbt.putInt("duration2", effect.getDuration());
-                if (!contentsNbt.contains("amplifier")) nbt.putInt("amplifier", effect.getAmplifier());
-                else nbt.putInt("amplifier2", effect.getAmplifier());
-                nbt.putInt("color", effect.getEffectType().value().getColor());
+                if (!contentsNbt.contains("amplifier")) contentsNbt.putInt("amplifier", effect.getAmplifier());
+                else contentsNbt.putInt("amplifier2", effect.getAmplifier());
+                if (!nbt.contains("color"))
+                    nbt.putInt("color", effect.getEffectType().value().getColor());
             });
             nbt.put("potionEffects", contentsNbt);
         }

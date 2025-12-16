@@ -96,7 +96,9 @@ public class Sandwich {
     }
 
     public List<ItemStack> getFoodList() {
-        return foods;
+        synchronized (foods) {
+            return new ArrayList<>(foods);
+        }
     }
 
     public void setFoodList(List<ItemStack> list) {
