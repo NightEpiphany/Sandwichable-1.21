@@ -4,6 +4,8 @@ import com.moigferdsrte.sandwichable.blocks.entity.BasinBlockEntity;
 import com.moigferdsrte.sandwichable.blocks.extra.BasinContent;
 import com.moigferdsrte.sandwichable.blocks.extra.BasinContentType;
 import com.moigferdsrte.sandwichable.util.Util;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -15,6 +17,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 
+@Environment(EnvType.CLIENT)
 public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockEntity> {
     private static final Identifier TEX_MILK = Util.id("textures/entity/basin/milk.png");
 
@@ -42,6 +45,7 @@ public class BasinBlockEntityRenderer implements BlockEntityRenderer<BasinBlockE
         matrices.pop();
     }
 
+    @Environment(EnvType.CLIENT)
     public static class BasinContentModel extends Model {
         public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Util.id("basin/content"), "main");
 

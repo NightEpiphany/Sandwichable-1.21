@@ -5,6 +5,8 @@ import com.moigferdsrte.sandwichable.blocks.entity.DesalinatorBlockEntity;
 import com.moigferdsrte.sandwichable.blocks.entity.screen.DesalinatorScreenHandler;
 import com.moigferdsrte.sandwichable.util.Util;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,6 +16,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class DesalinatorScreen extends HandledScreen<DesalinatorScreenHandler> {
     private static final Identifier TEXTURE = Identifier.of("sandwichable", "textures/gui/container/desalinator.png");
     private MouseOverBox waterTankBox;

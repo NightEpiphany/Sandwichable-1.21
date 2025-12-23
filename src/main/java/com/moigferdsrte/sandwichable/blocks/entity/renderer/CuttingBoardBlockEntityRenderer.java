@@ -2,6 +2,8 @@ package com.moigferdsrte.sandwichable.blocks.entity.renderer;
 
 import com.moigferdsrte.sandwichable.blocks.CuttingBoardBlock;
 import com.moigferdsrte.sandwichable.blocks.entity.CuttingBoardBlockEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -15,6 +17,7 @@ import net.minecraft.util.math.RotationAxis;
 
 import java.util.Objects;
 
+@Environment(EnvType.CLIENT)
 public class CuttingBoardBlockEntityRenderer implements BlockEntityRenderer<CuttingBoardBlockEntity> {
 
     public CuttingBoardBlockEntityRenderer(BlockEntityRendererFactory.Context context) {

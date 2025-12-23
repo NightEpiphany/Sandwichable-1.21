@@ -1,11 +1,14 @@
 package com.moigferdsrte.sandwichable.blocks.entity.renderer;
 
 import com.moigferdsrte.sandwichable.blocks.entity.SandwichBlockEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 
+@Environment(EnvType.CLIENT)
 public class SandwichBlockEntityRenderer implements BlockEntityRenderer<SandwichBlockEntity> {
     public SandwichBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
     }

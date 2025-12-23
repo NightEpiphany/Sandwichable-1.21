@@ -2,12 +2,15 @@ package com.moigferdsrte.sandwichable.blocks.entity.screen.ins;
 
 import com.moigferdsrte.sandwichable.blocks.entity.screen.BottleCrateScreenHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 public class BottleCrateScreen extends HandledScreen<BottleCrateScreenHandler> {
     private static final Identifier TEXTURE = Identifier.of("sandwichable", "textures/gui/container/bottle_crate.png");
 

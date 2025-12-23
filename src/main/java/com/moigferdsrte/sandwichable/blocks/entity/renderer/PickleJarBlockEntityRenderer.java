@@ -3,6 +3,8 @@ package com.moigferdsrte.sandwichable.blocks.entity.renderer;
 import com.moigferdsrte.sandwichable.blocks.entity.PickleJarBlockEntity;
 import com.moigferdsrte.sandwichable.blocks.extra.PickleJarFluid;
 import com.moigferdsrte.sandwichable.util.Util;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -15,6 +17,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.RotationAxis;
 
+@Environment(EnvType.CLIENT)
 public class PickleJarBlockEntityRenderer implements BlockEntityRenderer<PickleJarBlockEntity> {
     public static final Identifier TEX_CUCUMBER = Util.id("textures/entity/pickle_jar/cucumber.png");
     public static final Identifier TEX_FLUID = Util.id("textures/entity/pickle_jar/pickle_jar_fluid.png");
@@ -58,6 +61,7 @@ public class PickleJarBlockEntityRenderer implements BlockEntityRenderer<PickleJ
         matrices.pop();
     }
 
+    @Environment(EnvType.CLIENT)
     public static class FluidModel extends Model {
         public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Util.id("pickle_jar/fluid"), "main");
 
@@ -83,6 +87,7 @@ public class PickleJarBlockEntityRenderer implements BlockEntityRenderer<PickleJ
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static class CucumberModel extends Model {
         public static final EntityModelLayer MODEL_LAYER = new EntityModelLayer(Util.id("pickle_jar/cucumber"), "main");
 

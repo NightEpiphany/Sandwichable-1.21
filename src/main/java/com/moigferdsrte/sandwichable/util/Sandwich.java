@@ -158,15 +158,32 @@ public class Sandwich {
         addFromNbt(nbt, registries);
     }
 
+    public void setFromNbt(NbtCompound nbt) {
+        clearFoodList();
+        addFromNbt(nbt);
+    }
+
+    public void addFromNbt(NbtCompound nbt) {
+        NbtList list = nbt.getList("Items", 10);
+        ItemStack stack;
+        for(int i = 0; i < list.size(); ++i) {
+            NbtCompound stackTag = list.getCompound(i);
+            var item = Registries.ITEM.get(Identifier.of(stackTag.getString("id")));
+            int count = stackTag.getByte("count");
+            stack = new ItemStack(item, count);
+            if (stackTag.contains("components", NbtElement.COMPOUND_TYPE)) {
+                stack.set(CUSTOM_DATA, NbtComponent.of(stackTag.getCompound("components")));
+            }
+            if(stack.getItem() != BlocksRegistry.SANDWICH.asItem()) foods.add(stack);
+        }
+    }
+
     public void addFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         NbtList list = nbt.getList("Items", NbtElement.COMPOUND_TYPE);
         ItemStack stack;
         for(int i = 0; i < list.size(); ++i) {
             NbtCompound stackTag = list.getCompound(i);
             stack = ItemStack.fromNbt(registries, stackTag).orElse(new ItemStack(Items.BREAD));
-            if (stackTag.contains("tag")) {
-                stack.set(CUSTOM_DATA, NbtComponent.of(stackTag.getCompound("tag")));
-            }
             if(stack.getItem() != BlocksRegistry.SANDWICH.asItem()) foods.add(stack);
         }
     }

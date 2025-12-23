@@ -7,21 +7,18 @@ import com.moigferdsrte.sandwichable.blocks.entity.screen.ins.DesalinatorScreen;
 import com.moigferdsrte.sandwichable.entity.render.SandwichTableMinecartEntityRenderer;
 import com.moigferdsrte.sandwichable.fluids.FluidsRegistry;
 import com.moigferdsrte.sandwichable.items.BiomeVariantItem;
-import com.moigferdsrte.sandwichable.items.spread.PotionSpreadType;
 import com.moigferdsrte.sandwichable.particle.Particles;
-import com.moigferdsrte.sandwichable.registry.BlocksRegistry;
-import com.moigferdsrte.sandwichable.registry.EntitiesRegistry;
-import com.moigferdsrte.sandwichable.registry.ItemsRegistry;
-import com.moigferdsrte.sandwichable.registry.NetworkRegistry;
+import com.moigferdsrte.sandwichable.registry.*;
 import com.moigferdsrte.sandwichable.util.AncientGrainType;
 import com.moigferdsrte.sandwichable.util.RenderFlags;
 import com.moigferdsrte.sandwichable.util.SpreadRegistry;
 import com.moigferdsrte.sandwichable.util.Util;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -52,11 +49,12 @@ import java.util.function.Function;
 
 import static net.minecraft.component.DataComponentTypes.CUSTOM_DATA;
 
+@Environment(EnvType.CLIENT)
 public class SandwichableClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        NetworkRegistry.clientInit();
+        ClientNetworkRegistry.clientInit();
         BlockEntityRendererFactories.register(BlocksRegistry.SANDWICHTABLE_BLOCKENTITY, SandwichTableBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(BlocksRegistry.SANDWICH_BLOCKENTITY, SandwichBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(BlocksRegistry.PICKLEJAR_BLOCKENTITY, PickleJarBlockEntityRenderer::new);

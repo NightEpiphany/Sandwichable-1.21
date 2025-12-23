@@ -2,6 +2,8 @@ package com.moigferdsrte.sandwichable.blocks.entity.renderer;
 
 import com.moigferdsrte.sandwichable.blocks.ToasterBlock;
 import com.moigferdsrte.sandwichable.blocks.entity.ToasterBlockEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
@@ -15,6 +17,7 @@ import net.minecraft.util.math.RotationAxis;
 
 import java.util.Objects;
 
+@Environment(EnvType.CLIENT)
 public class ToasterBlockEntityRenderer implements BlockEntityRenderer<ToasterBlockEntity> {
 
     public ToasterBlockEntityRenderer(BlockEntityRendererFactory.Context context) {

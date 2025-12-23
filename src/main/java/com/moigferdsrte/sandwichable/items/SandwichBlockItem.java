@@ -5,7 +5,6 @@ import com.moigferdsrte.sandwichable.util.Sandwich;
 import com.moigferdsrte.sandwichable.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.LivingEntity;
@@ -19,12 +18,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.potion.Potion;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.*;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -36,8 +30,6 @@ import java.util.List;
 import static net.minecraft.component.DataComponentTypes.*;
 
 public class SandwichBlockItem extends InfoTooltipBlockItem {
-
-    private static final MinecraftClient mc = MinecraftClient.getInstance();
 
     private final Sandwich cache = new Sandwich();
 
@@ -73,7 +65,7 @@ public class SandwichBlockItem extends InfoTooltipBlockItem {
     public Text getName(ItemStack stack) {
         if(stack.contains(BLOCK_ENTITY_DATA)) {
             NbtCompound tag = stack.get(BLOCK_ENTITY_DATA).copyNbt();
-            cache.setFromNbt(tag, mc.world.getRegistryManager());
+            cache.setFromNbt(tag);
             int size = cache.getSize();
             boolean hacked = false;
             for(ItemStack food : cache.getFoodList()) {
@@ -97,11 +89,11 @@ public class SandwichBlockItem extends InfoTooltipBlockItem {
     @Override
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         SandwichableConfig config = Util.getConfig();
-        return config.baseSandwichEatTime + (config.slowEatingLargeSandwiches ? getFoodListSize(stack) : 0);
+        return config.baseSandwichEatTime + (config.slowEatingLargeSandwiches ? getFoodListSize(stack, user.getRegistryManager()) : 0);
     }
 
-    public int getFoodListSize(ItemStack stack) {
-        cache.setFromNbt(stack.getOrDefault(BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt(), mc.world.getRegistryManager());
+    public int getFoodListSize(ItemStack stack, DynamicRegistryManager registryManager) {
+        cache.setFromNbt(stack.getOrDefault(BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt(), registryManager);
         return cache.getSize();
     }
 
@@ -165,7 +157,7 @@ public class SandwichBlockItem extends InfoTooltipBlockItem {
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        cache.setFromNbt(stack.getOrDefault(BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt(), mc.world.getRegistryManager());
+        cache.setFromNbt(stack.getOrDefault(BLOCK_ENTITY_DATA, NbtComponent.DEFAULT).copyNbt(), context.getRegistryLookup());
         int size = cache.getSize();
         List<ItemStack> foods = cache.getFoodList();
         int i = 0; while(i < size && i < 5) {

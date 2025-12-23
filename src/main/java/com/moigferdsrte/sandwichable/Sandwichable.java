@@ -130,6 +130,7 @@ public class Sandwichable implements ModInitializer {
 		SandwichableDataComponent.init();
 		CommonTags.init();
 		SandwichMakerProfession.init();
+		NetworkRegistry.registerPayload();
 		NetworkRegistry.serverInit();
 		VillagerHouses.register();
 		AncientGrainType.init();

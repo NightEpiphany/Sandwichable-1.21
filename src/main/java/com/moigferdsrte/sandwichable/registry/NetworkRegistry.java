@@ -18,47 +18,18 @@ import net.minecraft.world.World;
 
 public class NetworkRegistry {
 
-    public static void serverInit() {
+    public static void registerPayload() {
         PayloadTypeRegistry.playC2S().register(MinecartClientSyncPayload.ID, MinecartClientSyncPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(MinecartServerSyncPayload.ID, MinecartServerSyncPayload.CODEC);
+        PayloadTypeRegistry.playS2C().register(CuttingBoardParticlesPayload.ID, CuttingBoardParticlesPayload.CODEC);
+    }
 
+    public static void serverInit() {
         ServerPlayNetworking.registerGlobalReceiver(MinecartClientSyncPayload.ID, (payload, ctx) -> {
             Entity e = ctx.player().getEntityWorld().getEntityById(payload.id());
             ctx.server().execute(() -> {
                 if (e instanceof SandwichTableMinecartEntity) {
                     ((SandwichTableMinecartEntity)e).sync();
-                }
-            });
-        });
-    }
-
-    public static void clientInit() {
-        PayloadTypeRegistry.playS2C().register(MinecartServerSyncPayload.ID, MinecartServerSyncPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(CuttingBoardParticlesPayload.ID, CuttingBoardParticlesPayload.CODEC);
-
-        ClientPlayNetworking.registerGlobalReceiver(MinecartServerSyncPayload.ID, (payload, ctx) -> {
-            Entity e = ctx.client().player.getEntityWorld().getEntityById(payload.specId());
-            ctx.client().execute(() -> {
-                if(e instanceof SandwichTableMinecartEntity) {
-                    ((SandwichTableMinecartEntity)e).readSandwichTableData(payload.nbt());
-                }
-            });
-        });
-
-        ClientPlayNetworking.registerGlobalReceiver(CuttingBoardParticlesPayload.ID, (payload, ctx) -> {
-            ItemStack stack = payload.stack();
-            int top = stack.getCount();
-            int layers = payload.depth();
-            BlockPos pos = payload.pos();
-            Random random = ctx.client().world.getRandom();
-            World world = MinecraftClient.getInstance().world;
-            ctx.client().execute(() -> {
-                for (int i = 0; i < layers; i++) {
-                    for (int j = 0; j < 2 + random.nextInt(2); j++) {
-                        double x = pos.getX() + 0.5 + ((random.nextDouble() - 0.5) / 3);
-                        double y = pos.getY() + 0.094 + ((top - i) * 0.03124);
-                        double z = pos.getZ() + 0.5 + ((random.nextDouble() - 0.5) / 3);
-                        world.addParticle(new ItemStackParticleEffect(ParticleTypes.ITEM, stack), x, y, z, 0, (random.nextDouble() + 1.0) * 0.066, 0);
-                    }
                 }
             });
         });
